@@ -1,0 +1,101 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+
+      
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">{{companyName +"  "}}Payment History</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body over-auto">
+
+          
+          <table class="table table-bordered table-condensed" *ngIf="apidata; else content" datatable [dtOptions]="dtOptions" width="100%">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th class="d-none">ID</th>
+                  <th>Reference ID</th>
+                  <th>Payment Type</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Date Paid</th>
+                  <th>Action</th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                  
+                <tr *ngFor="let mydata of apidata ; index as i">
+                  <td>{{i+1}}</td>
+                  <td class="d-none">{{mydata.id}}</td>
+                  <td>{{ mydata.reference_id}}</td>
+                  <td>{{ mydata.payment_type | titlecase}}</td>
+                  <td>{{ mydata.payment_description }}</td>
+                  <td>{{ mydata.amount | number  }}</td>
+                  <td>{{ mydata.created_at | date }}</td>
+                  <td style="width: 15%"><button class="btn btn-sm btn-outline-primary"
+                    (click)="viewPayment(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i>
+                    View</button></td>
+  
+                </tr>
+              </tbody>
+            </table>
+
+            <ng-template #content > <p style="color: red;" > </p></ng-template>
+           
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+      </div>
+
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+
+<ng-template #mymodal let-modal class="mt-5">
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">   {{ companyName }}</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+  </div>
+
+  <div class="modal-body">
+      <div class="container">
+
+        <dl class="row">
+          <dt class="col-sm-5">Reference ID</dt>
+          <dd class="col-sm-7">{{paymentData.reference_id}}</dd>
+
+          <dt class="col-sm-5">Payment_type</dt>
+          <dd class="col-sm-7">{{paymentData.payment_type}}</dd>
+          <dt class="col-sm-5">Description</dt>
+          <dd class="col-sm-7">{{paymentData.payment_description | titlecase}}</dd>
+          <dt class="col-sm-5">Amount</dt>
+          <dd class="col-sm-7">{{paymentData.amount}}</dd>
+          <dt class="col-sm-5">Date Paid</dt>
+          <dd class="col-sm-7">{{paymentData.created_at | date }}</dd>
+        </dl>
+
+      </div>
+  </div>
+
+  <div class="modal-footer">
+      <button type="button" class="btn button-login" (click)="modal.close('Save click')">Ok</button>
+  </div>
+</ng-template>

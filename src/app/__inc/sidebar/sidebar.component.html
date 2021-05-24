@@ -1,0 +1,354 @@
+
+<!--  This Menu For Manager ROLE-->
+<aside class="main-sidebar sidebar-dark-primary elevation-4" >
+   
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-2 d-flex">
+        <div class="image">
+          <!-- <img src="assets/dist/img/admin-logo.png" class="img-dashboard-logo img-fluid" alt="User Image"> -->
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item has-treeview menu-open">
+            <a [routerLink]="['/dashboard']" [routerLinkActive]="['active']" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link">
+              <p class="p-cls">
+                <span class="line-cls"></span>
+                <span class="for-text">PAMS</span>
+                <span class="line-cls"></span>
+               </p>
+            </a>
+          </li>
+
+
+          <li id="accordion" class="">
+            <div class=" nav-item" id="headingRemittance">
+              <a class=" pl-4 collapsed pr-5 nav-link" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#collapseRemittance" aria-expanded="false" aria-controls="collapseTwo">
+                <i class="nav-icon far fa-calendar-alt">&nbsp;&nbsp;</i> 
+                <p>
+                   Client Management
+               </p> 
+               <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+            <div id="collapseRemittance" class="collapse pl-4" aria-labelledby="headingRemittance" data-parent="#accordion">
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+                <li class="nav-item">
+                  <a  [routerLink]="['/client']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                      Clients
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a  [routerLink]="['/newClient']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-clipboard-list"></i>
+                    <p>
+                      New Client
+                    </p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a  [routerLink]="['/assessments']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                      Assessments
+                    </p>
+                  </a>
+                </li> -->
+                
+              </ul>
+  
+            </div>
+          </li>
+
+
+          <li id="accordion" class="">
+            <div class=" nav-item" id="headingAnnualReturn">
+              <a class=" pl-4 collapsed pr-5 nav-link" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#collapseAnnualReturn" aria-expanded="false" aria-controls="collapseAnnualReturn">
+                <i class="nav-icon fas fa-exchange-alt">&nbsp;&nbsp;</i> 
+                <p>
+                  Sampling
+                </p>
+                <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+            <div id="collapseAnnualReturn" class="collapse pl-4" aria-labelledby="headingAnnualReturn" data-parent="#accordion">
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+                <li class="nav-item">
+                  <a  [routerLink]="['/allSampling']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-clipboard-list"></i>
+                    <p>
+                      All Samplings
+                    </p>
+                  </a>
+                </li>
+               
+                <li class="nav-item">
+                  <a  [routerLink]="['/fieldSampling']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                      Field Sampling
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a  [routerLink]="['/sampleTemplate']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                      Sample Templates
+                    </p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a  [routerLink]="['/labTests']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fab fa-red-river"></i>
+                    <p>
+                      Lab Tests
+                    </p>
+                  </a>
+                </li>
+ 
+               
+              </ul>
+  
+            </div>
+          </li>
+
+
+          <li id="accordion" class=" "> 
+            <div class="nav-item" id="">
+              <a class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <i class="nav-icon pr-2  far fa-chart-bar">&nbsp;&nbsp;</i>
+                <p>
+                  Invoicing 
+                </p>  
+                <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+            <div id="collapseOne" class="collapse pl-4" aria-labelledby="headingOne" data-parent="#accordion">
+  
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+
+                <li class="nav-item">
+                  <a [routerLink]="['paidInvoices']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-paper-plane"></i>
+                    <p>
+                      Paid Invoices
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a [routerLink]="['unpaidInvoices']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon far fa-thumbs-up"></i>
+                    <p>
+                      Unpaid Invoices
+                    </p>
+                  </a>
+                </li>
+  
+              </ul>
+  
+            </div>
+          </li>
+
+          <li id="accordion" class=" "> 
+            <div class="nav-item" id="">
+              <a class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#collapseInventory" aria-expanded="false" aria-controls="collapseInventory">
+                <i class="nav-icon pr-2  far fa-chart-bar ">&nbsp;&nbsp;</i>
+                <p>
+                  Inventory 
+                </p>  
+                <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+            <div id="collapseInventory" class="collapse pl-4" aria-labelledby="headingOne" data-parent="#accordion">
+  
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+
+                <li class="nav-item">
+                  <a [routerLink]="['addInventory']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-paper-plane"></i>
+                    <p>
+                      Add to Stock
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a [routerLink]="['inventory']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon far fa-thumbs-up"></i>
+                    <p>
+                      View Stock
+                    </p>
+                  </a>
+                </li>
+  
+              </ul>
+  
+            </div>
+          </li>
+   
+          <li class="nav-item">
+            <a class="nav-link">
+              <p class="p-cls">
+                <span class="line-cls"></span>
+                <span class="line-cls"></span>
+               </p>
+            </a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link">
+              <p></p>
+            </a>
+          </li>
+
+          <li id="accordion" class="">
+            
+            <div class="nav-item" id="headingTwo">
+              <a class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <i class="nav-icon pr-2  fas fa-users">&nbsp;&nbsp;</i>
+                <p>
+                  User Management 
+                </p>  
+                <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+
+
+
+            <div id="collapseTwo" class="collapse pl-4" aria-labelledby="headingTwo" data-parent="#accordion">
+  
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+                <li class="nav-item">
+                  <a [routerLink]="['displayuser']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                      Users
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a [routerLink]="['myprofile', userID]" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-user-cog"></i>
+                    <p>
+                      My Profile
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item"  >
+                  <a [routerLink]="['useractivities']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-clipboard-list"></i>
+                    <p>
+                      Users Activities
+                    </p>
+                  </a>
+                </li>
+                 
+                
+                <li class="nav-item">
+                  <a  [routerLink]="['/deletedemployees']"  [routerLinkActive]="['active']"  class="nav-link">
+                    <i class="nav-icon fas fa-trash-alt"></i>
+                    <p>
+                      Deleted Employees
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a [routerLink]="['/changepassword']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-lock"></i>
+                    <p>
+                      Change Password
+                    </p>
+                  </a>
+                </li>
+              </ul>
+  
+            </div>
+          </li>
+
+
+          <li id="accordion" class=" "> 
+            <div class="nav-item" id="paymenthistory">
+              <a class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
+                data-target="#report" aria-expanded="false" aria-controls="report">
+                <i class="nav-icon pr-2  fas fa-file-alt">&nbsp;&nbsp;</i>
+                <p>
+                  Reports 
+                </p>  
+                <i class="fas fa-angle-left right"></i>
+              </a>
+            </div>
+            <div id="report" class="collapse pl-4" aria-labelledby="paymenthistory" data-parent="#accordion">
+  
+              <ul class="nav nav-pills nav-sidebar flex-column">
+                
+
+                <li class="nav-item">
+                  <a [routerLink]="['reports']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                    <p>
+                      Submitted Reports
+                    </p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a [routerLink]="['approvedprojection']" [routerLinkActive]="['active']" class="nav-link">
+                    <i class="nav-icon far fa-thumbs-up"></i>
+                    <p>
+                      Approved Projection
+                    </p>
+                  </a>
+                </li> -->
+  
+              </ul>
+  
+            </div>
+          </li> 
+          
+          <li class="nav-item">
+            <a [routerLink]="['/logout']" [routerLinkActive]="['active']"  class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Logout
+              </p>
+            </a>
+          </li>
+         
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+
+
+ 

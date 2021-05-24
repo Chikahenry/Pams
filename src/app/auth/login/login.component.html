@@ -1,0 +1,134 @@
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="margin-left:0px;padding: 0px 0px 0px 18px;">
+  <a [routerLink]="['/home']"><img src="assets/dist/img/logo-header.png" height="50px"></a>
+  <div class="ml-auto color-white">
+
+    <a [routerLink]="['/home']" >
+      <i class="fas fa-home"></i> Home
+    </a>
+
+    <a [routerLink]="['/login']" >
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </a>
+
+    <a [routerLink]="['/faq']">
+      <i class="far fa-comments"></i> FAQ's
+    </a>
+  </div>
+</nav>
+
+
+
+
+
+
+
+<div class="row m-0" style="min-height: calc(100vh - 51px);">
+
+
+  <div class="col-sm-4 left-side p-0 side-center">
+
+    <div class="mx-auto">
+      <img src="assets/dist/img/login-logo.png" class="mx-auto img-fluid" alt="" style="max-height: 350px; padding: 37px;">
+    </div>
+
+  </div>
+
+
+  <div class="col-sm-8 p-0">
+
+
+
+
+
+
+
+
+
+<!-- OLD HTML  -->
+<div class="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <!-- <img src="assets/dist/img/login-logo.png" alt="myimage"> -->
+    </div>
+    <!-- /.login-logo -->
+
+    <div class="card">
+      <div class="card-body login-card-body">
+        <img src="assets/dist/img/login-user-img.png" alt="myimage">
+
+        <!--<div class="alert alert-danger" role="alert" *ngIf="iserror==1" >
+            {{errormsg}}
+
+        </div> --> 
+        <div   class="validate-form">
+          <p class="login-box-msg bold-black"> Please login to access your portal</p>
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+
+            <!-- <div class=""> -->
+ 
+
+            <div class="input-group mb-2">
+              <input type="email" class="form-control" placeholder="Email Address" formControlName="emailAddress"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls.emailAddress.errors }">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="submitted &amp;&amp; loginForm.controls.emailAddress.errors" class="text-danger validation-error">
+              <div *ngIf="loginForm.controls.emailAddress.errors.required">Email is required</div>
+              <div *ngIf="loginForm.controls.emailAddress.errors.pattern">Email must be a valid email</div>
+              <div *ngIf="loginForm.controls.emailAddress.errors.maxlength">Email must be under 45 characters</div>
+            </div>
+
+            <div class="input-group mb-2">
+              <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" placeholder="Password" formControlName="password"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; loginForm.controls.password.errors }">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fa" [ngClass]="{
+                                        'fa-eye-slash': !fieldTextType,
+                                        'fa-eye': fieldTextType
+                                      }" ></span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="submitted &amp;&amp; loginForm.controls.password.errors" class="text-danger validation-error">
+              <div *ngIf="loginForm.controls.password.errors.required">Password is required</div>
+              <div *ngIf="loginForm.controls.password.errors.minlength">Password must be at least 6 characters</div>
+            </div> 
+            <div class="social-auth-links text-center mb-2">
+              <button class="btn btn-block btn button-login" id='mycaptcha'>
+                Login
+              </button>
+            </div>
+          </form>
+          <div class="login-remeber text-center">
+            <label><input type="checkbox" id="check" name="check"> Remember Me</label>
+          </div>
+
+          <div class="login-remeber text-center">
+            <a [routerLink]="['/signup']" style="color: #00834e;">Create Account</a>
+            <a [routerLink]="['/forgotpassword']" style="margin-left: 20px;color: #00834e;">Forgot Password?</a>
+          </div>
+        </div>
+ 
+      </div>
+
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+
+</div>
+<!-- End OLD HTML  -->
+
+
+
+
+
+
+
+
+</div>

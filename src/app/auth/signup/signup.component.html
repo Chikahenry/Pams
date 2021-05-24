@@ -1,0 +1,193 @@
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="margin-left:0px;padding: 0px 0px 0px 18px;">
+  <a [routerLink]="['/home']"><img src="assets/dist/img/logo-header.png" height="50px"></a>
+  <div class="ml-auto color-white">
+
+    <a [routerLink]="['/home']" >
+      <i class="fas fa-home"></i> Home
+    </a>
+
+    <a [routerLink]="['/login']" >
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </a>
+
+    <a [routerLink]="['/faq']">
+      <i class="far fa-comments"></i> FAQ's
+    </a>
+  </div>
+</nav>
+
+
+<div class="row m-0" style="min-height: calc(100vh - 51px);">
+
+  <div class="col-sm-4 left-side p-0 side-center">
+
+    <div class="mx-auto">
+      <img src="assets/dist/img/login-logo.png" class="mx-auto img-fluid" alt="" style="max-height: 350px; padding: 37px;">
+    </div>
+
+  </div>
+
+
+
+  <div class="col-sm-8">
+
+
+
+
+
+<div class="login-page">
+  <div class="login-box"  >
+
+     <div class="login-logo">
+      <!--<img src="assets/dist/img/login-logo.png" alt="myimage"> -->
+    </div> 
+
+    <!-- /.login-logo -->
+
+    <div class="card"  >
+      <div class="card-body">
+        <div class="d-flex justify-content-center">
+
+          <img src="assets/dist/img/login-user-img.png" alt="myimage">
+        </div>
+  
+        <!-- sign-up form-->
+        <div class="signupForm" >
+          <p class="login-box-msg bold-black pull-left">Please fill the form given below</p>
+          <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit(registerForm.value)"
+            class=" pl-4 pr-4 pt-2 pb-3">
+            <div class=" ">
+              <div class="row mb-2  ">
+                <div class="col-md-6 ">
+                    <label for="firstname" class="input-label pull-left">First Name<sup
+                        class=" font-wegiht-bold text-danger">*</sup></label>
+                    <div class=" inputWithIcon">
+                      <!-- <input type="text" placeholder=""> -->
+                      <input type="text" formControlName="firstname" class="form-control" id="firstname"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.firstname.errors }" />
+
+                        <div *ngIf="submitted &amp;&amp; registerForm.controls.firstname.errors" class="text-danger">
+                          <div *ngIf="registerForm.controls.firstname.errors.required">First name is required</div>
+                          <div *ngIf="registerForm.controls.firstname.errors.pattern">Only Alphanumeric Characters allowed</div>
+                          <div *ngIf="registerForm.controls.firstname.errors.maxlength">First name can not exceed 60 characters</div>
+                        </div>
+                    </div>
+                  </div>
+                
+
+                <div class="col-md-6">
+
+                  <label for="lastname" class="input-label pull-left">Last Name<sup
+                    class=" font-wegiht-bold text-danger">*</sup></label>
+                <div class=" inputWithIcon">
+                  <!-- <input type="text" placeholder=""> -->
+                  <input type="text" formControlName="lastname" class="form-control" id="lastname"
+                    [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.lastname.errors }" />
+
+                    <div *ngIf="submitted &amp;&amp; registerForm.controls.lastname.errors" class="text-danger">
+                      <div *ngIf="registerForm.controls.lastname.errors.required">Last name is required</div>
+                      <div *ngIf="registerForm.controls.lastname.errors.pattern">Only Alphanumeric Characters allowed</div>
+                      <div *ngIf="registerForm.controls.lastname.errors.maxlength">Last name can not exceed 60 characters</div>
+                    </div>
+                </div>
+                  </div>
+                
+
+              </div>
+
+              <div class="row mb-2 ">
+                <div class="col-md-6 "> 
+                    <label for="phone" class="input-label pull-left">Phone Number<sup
+                        class=" font-wegiht-bold text-danger">*</sup></label>
+                    <div class="inputWithIcon">
+                      <!-- <input type="text" placeholder=""> -->
+                      <input type="text" formControlName="phone" class="form-control" id="phone" maxlength="11"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.phone.errors }" />
+                        <div *ngIf="submitted &amp;&amp; registerForm.controls.phone.errors" class="text-danger">
+                          <div *ngIf="registerForm.controls.phone.errors.required">Phone No is required</div>
+                          <div *ngIf="registerForm.controls.phone.errors.maxlength">Phone No must be 11 Digit Long.</div>
+                          <div *ngIf="registerForm.controls.phone.errors.minlength">Phone No must be 11 Digit Long.</div>
+                          <div *ngIf="registerForm.controls.phone.errors.pattern">Phone No must be Number Only</div>
+                        </div>
+                    </div>
+                  
+                </div>
+
+                <div class="col-md-6  "> 
+                    <label for="emailAddress" class="input-label pull-left">Email Address<sup
+                        class=" font-wegiht-bold text-danger">*</sup></label>
+                    <div class=" inputWithIcon">
+                      <!-- <input type="text" placeholder=""> -->
+                      <input type="text" formControlName="emailAddress" class="form-control" id="emailAddress"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.emailAddress.errors }" />
+                        <div *ngIf="submitted &amp;&amp; registerForm.controls.emailAddress.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.emailAddress.errors.required">Email Address is required</div>
+                        <div *ngIf="registerForm.controls.emailAddress.errors.email">Provide Valid Email address</div>
+                        <div *ngIf="registerForm.controls.emailAddress.errors.pattern">Email Address not valid</div>
+                  </div>
+                    </div>
+                </div> 
+                
+              </div>
+ 
+              <div class="row mb-2 ">
+                <div class="col-md-6"> 
+                    <label for="activationCode" class="input-label pull-left">Activation Code<sup
+                        class=" font-wegiht-bold text-danger">*</sup></label>
+                    <div class="inputWithIcon">
+                      <!-- <input type="text" placeholder=""> -->
+                      <input type="text" formControlName="activationCode" class="form-control" id="activationCode" maxlength="4"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.activationCode.errors }" />
+                        <div *ngIf="submitted &amp;&amp; registerForm.controls.activationCode.errors" class="text-danger">
+                          <div *ngIf="registerForm.controls.activationCode.errors.required">Activation Code is required</div>
+                          <div *ngIf="registerForm.controls.activationCode.errors.maxlength">Activation Code must be 4 Digit Long.</div>
+                          <div *ngIf="registerForm.controls.activationCode.errors.minlength"> Activation Code must be 4 Digit Long.</div>
+                          <div *ngIf="registerForm.controls.activationCode.errors.pattern">Activation Code must be Number Only</div>
+                        </div>
+                    </div>
+                  
+                </div>
+
+                <div class="col-md-6  "> 
+                    <label for="password" class="input-label pull-left">Password<sup
+                        class=" font-wegiht-bold text-danger">*</sup></label>
+                    <div class=" inputWithIcon">
+                      <!-- <input type="text" placeholder=""> -->
+                      <input type="text" formControlName="password" class="form-control" id="password"
+                        [ngClass]="{ 'is-invalid': submitted &amp;&amp; registerForm.controls.password.errors }" />
+                        <div *ngIf="submitted &amp;&amp; registerForm.controls.password.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.password.errors.required">Password is required</div> 
+                  </div>
+                    </div>
+                </div> 
+                
+              </div>
+ 
+
+              <!-- Sign in button -->
+              <div class="social-auth-links text-center mt-3 pt-3">
+                <button class="btn btn-block btn button-login">
+                  Create Account
+                </button>
+              </div>
+            </div>
+
+          </form>
+
+          <div class="login-remeber text-center">
+            <span>Already Registered ?<a [routerLink]="['/login']" style="color: #00834e;" >  Sign In</a></span>
+          </div>
+
+
+        </div>
+        <!-- End of sign-up form -->
+ 
+      </div>
+
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+
+</div>
+
+</div>

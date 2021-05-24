@@ -1,0 +1,88 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+    <div class="container-fluid" data-select2-id="31">
+      <flash-messages></flash-messages>
+      <!-- SELECT2 EXAMPLE -->
+      <div class="card card-secondary">
+        <div class="card-header custome">
+          <h3 class="card-title">Update User Record</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm.value)">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="Name">Name</label>
+
+                <input type="text" formControlName="name" class="form-control" [(ngModel)]="userRecord.name" 
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls.name.errors }" />
+                <div *ngIf="submitted &amp;&amp; editForm.controls.name.errors" class="text-danger">
+                  <div *ngIf="editForm.controls.name.errors.required">Name is required</div>
+                  <div *ngIf="editForm.controls.name.errors.minlength">Name must be at least 6 characters long.</div>
+                </div>
+
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Email</label>
+                <input type="text" formControlName="email" class="form-control" [(ngModel)]="userRecord.email"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls.email.errors }"readonly />
+                <div *ngIf="submitted &amp;&amp; editForm.controls.email.errors" class="text-danger">
+                  <div *ngIf="editForm.controls.email.errors.required">Email is required</div>
+                  <div *ngIf="editForm.controls.email.errors.email">Email must be a valid email address</div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="role">Role Name</label>
+                <select class="form-control" id="role" formControlName="role" [(ngModel)]="userRecord.role_id"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls.role.errors }">
+                  <option value="">Select</option>
+                  <option *ngFor="let role of roles" value="{{role.id}}" >
+                    {{role.name}}
+                  </option>
+                </select>
+                <div *ngIf="submitted &amp;&amp; editForm.controls.role.errors" class="text-danger">
+                  <div *ngIf="editForm.controls.role.errors.required">Role is required</div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="phone">Phone</label>
+                <input type="text" formControlName="phone" class="form-control" [(ngModel)]="userRecord.phone" 
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls.phone.errors }" />
+                <div *ngIf="submitted &amp;&amp; editForm.controls.phone.errors" class="text-danger">
+                  <div *ngIf="editForm.controls.phone.errors.required">Phone is required</div>
+                  <div *ngIf="editForm.controls.phone.errors.minlength">Phone must be at least 10 characters long.</div>
+                  <div *ngIf="editForm.controls.phone.errors.maxlength">Phone must be at least 10 characters long.</div>
+                </div>
+              </div>
+              
+              
+            </div>
+
+
+            <button type="submit" class="btn btn button-login ">Update Records</button>
+          </form>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+      </div>
+
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>

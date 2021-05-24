@@ -1,0 +1,77 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31">
+          <flash-messages></flash-messages>
+          <!-- SELECT2 EXAMPLE -->
+          <div class="card card-secondary">
+              <div class="card-header custome">
+                  <h3 class="card-title">Monthly Remittance Assessments</h3>
+
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                  <div>
+                      <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+                      <table class="table table-bordered table-condensed" *ngIf="assessmentsData;" datatable
+                          [dtOptions]="dtOptions" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Date Generated</th>
+                                  <th>Invoice ID</th>
+                                  <th>Tax Year</th>
+                                  <th>Tax Month</th>
+                                  <th>Employees Count</th>
+                                  <!-- <th>Due Date</th> -->
+                                  <th>Total Monthly Tax</th>
+                                  <th>Status</th>
+                                  <!-- <th>Status</th> -->
+                                  <!-- <th>Corporate ID</th> -->
+                                  <th style="width: 10%">Details</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of assessmentsData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
+                                  <td>{{ mydata.assessment_id }}</td>
+
+                                  <td>{{ getTaxYear(mydata.due_date) }}</td>
+                                  <td>{{ getTaxMonth(mydata.due_date) }}</td>
+                                  <td>{{ getEmployeesCount(mydata.assessment_records) | number}}</td>
+                                  <!-- <td>{{ mydata.due_date | date }}</td> -->
+                                  <td>{{ mydata.monthly_tax_due | number }}</td>
+                                  <td>{{ mydata.status == 0 ? "In Active" : "Active" }}</td>
+                                  <!-- <td>{{ mydata.status }}</td> -->
+                                  <!-- <td>{{ mydata.corporate_id }}</td> -->
+
+                                  <td style="width: 10%">
+                                      <button class="btn btn-sm btn-outline-primary"
+                                          (click)="viewAssessment(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> View
+                                      </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
+                      Schedule</button> -->
+              </div>
+          </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
