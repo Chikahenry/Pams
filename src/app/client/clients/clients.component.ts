@@ -31,6 +31,7 @@ export class ClientsComponent implements OnInit {
   showClientForm: boolean;
   sampledata: any[]; 
   sampleTemplateData: any;
+  sampleTemplate: any;
   address: any;
   email: any;
   clientEmail: any;
@@ -221,7 +222,7 @@ export class ClientsComponent implements OnInit {
   deleteSample(test) {
 
   }
-  onUpdateClient() {
+  onUpdateClient(formData) {
 
   }
 
