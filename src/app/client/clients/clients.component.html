@@ -1,0 +1,257 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31"> 
+          <!-- SELECT2 EXAMPLE -->
+          <div class="card card-secondary">
+              <div class="card-header row custome">
+                <div class="col-md-8">
+                  <h3 class="card-title">Client Module </h3>
+
+                </div> 
+            <div class="col-md-4">
+              <button class="btn btn-block btn button-login" (click)="viewAddClient(addclientsModal)">
+                New Client</button></div>
+
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                  <div>
+                      <!-- <p class="login-box-msg bold-black">List of Employees</p> -->
+                      <table class="table table-bordered table-condensed" *ngIf="clientsData;" datatable
+                          [dtOptions]="dtOptions" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Name</th>
+                                  <th>Email</th>
+                                  <th>Address</th>
+                                  <th>Sample Count</th>    
+                                  <th>Date registered</th>    
+                                  <th  >Details</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of clientsData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.name | titlecase }}</td>
+                                  <td>{{ mydata.email  }}</td>
+                                  <td>{{ mydata.address  }}</td>
+                                  <td>{{ mydata.samples}}</td>  
+                                  <td>{{ mydata.registeredDate | date }}</td>  
+                                  <td style="width: 10%">
+                                      <button class="btn btn-sm btn-outline-primary"
+                                          (click)="viewSingleClient(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> View
+                                      </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
+                      Schedule</button> -->
+              </div>
+          </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ng-template #mymodal let-modal >
+  <div   class="validate-form mt-2">
+    <div class="card-header">
+      <h4 class=" bold-black">Selected Client</h4>
+
+    </div>
+
+    <div class="mt-2 ml-3 mb-4" *ngIf="singleClientName">
+      <h4>{{singleClientName}} </h4>
+
+    </div> 
+
+    <div class="ml-4 d-none mb-4" *ngIf="">
+      <form [formGroup]="updatesamplesForm" (ngSubmit)="onUpdateClient(updatesamplesForm.value)">
+        <div class="row mt-4">
+          <div class="form-group mb-2 col-md-5">
+            <input type="text" class="form-control" placeholder="sample Name" formControlName="name"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updatesamplesForm.controls.name.errors }">
+             
+              <div *ngIf="submitted &amp;&amp; updatesamplesForm.controls.name.errors" class="text-danger validation-error">
+                <div *ngIf="updatesamplesForm.controls.name.errors.required">Name is required</div> 
+              </div>
+          </div>
+          <div class="form-group col-md-5 mb-2">
+            <input type="text" class="form-control" placeholder="sample Limit" formControlName="limit"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updatesamplesForm.controls.limit.errors }">
+               
+              <div *ngIf="submitted &amp;&amp; updatesamplesForm.controls.limit.errors" class="text-danger validation-error">
+                <div *ngIf="updatesamplesForm.controls.limit.errors.required">sample Limit is required</div> 
+              </div>
+             
+          </div>
+    
+          <button class="btn btn button-login " >
+            Add
+          </button>
+  
+        </div>
+      </form>
+
+    </div>
+
+    <div class="card-body m-4 shadow border " *ngIf="sampleTemplate">
+      <ul class="todo-list-li" >
+
+        <div *ngFor="let sample of sampleTemplate; index as i">
+         
+          <li class="border">
+            <div class="icheck-primary d-inline ml-2 ">
+              <input type="checkbox" [value]="sample.id" checked="{{sample.done == 1}}"   name="todo1"
+                id="todoCheck{{i+1}}">
+              <label for="todoCheck{{i+1}}"></label>
+              <span class="text ml-4">Name: {{ sample.name }}</span>
+              <span class="text ml-5">Limit: {{ sample.limit }}</span>
+              <!-- <span title="Edit"> 
+                 <a (click)="editsample(sample)"
+                  class="badge badge-primary Delete-icon float-right pointer color-white delete-box">
+                  Edit <i class="nav-icon ml-3 fas fa-edit-alt"></i></a>
+              </span>  -->
+            </div>
+
+ 
+
+          </li>
+        </div>
+
+      </ul>
+      <!-- <a class="btn button-login mb-3" (click)="updateclients()">
+        Submit
+        </a> -->
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addclientsModal let-modal >
+  <div   class="validate-form mt-4 mb-5">
+    <div class="card-header">
+      <h4 class=" bold-black"> Add Client</h4>
+
+    </div>
+
+    <div class="mt-2 ml-3 mb-4" *ngIf="clientName">
+      <h4>{{clientName}} </h4>
+
+    </div>
+    <div class=" ml-4 mb-4" *ngIf="showClientForm">
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmitClient(clientForm.value)">
+        <div class="row mt-4">
+          <div class="form-group mb-2 col-md-6">
+            <input type="text" class="form-control" placeholder="Client Name" formControlName="name"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; clientForm.controls.name.errors }">
+             
+              <div *ngIf="submitted &amp;&amp; clientForm.controls.name.errors" class="text-danger validation-error">
+                <div *ngIf="clientForm.controls.name.errors.required">Client Name is required</div> 
+              </div>
+          </div>  
+          <div class="form-group mb-2 col-md-6">
+            <input type="text" class="form-control" placeholder="Client Email" formControlName="email"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; clientForm.controls.email.errors }">
+             
+              <div *ngIf="submitted &amp;&amp; clientForm.controls.email.errors" class="text-danger validation-error">
+                <div *ngIf="clientForm.controls.email.errors.required">Email is required</div> 
+              </div>
+          </div> 
+           
+            <div class="form-group mb-2 mt-4 col-md-12">
+              <textarea type="text" class="form-control" placeholder="Address" formControlName="address" rows="4"  
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; clientForm.controls.address.errors }"></textarea>
+               
+                <div *ngIf="submitted &amp;&amp; clientForm.controls.address.errors" class="text-danger validation-error">
+                  <div *ngIf="clientForm.controls.address.errors.required">Address is required</div> 
+                </div>
+            </div>
+            
+            <div class=' justify-content-center d-flex'>
+              <button class="btn button-login " >
+                Submit
+              </button>
+ 
+          </div>
+  
+        </div>
+      </form>
+
+    </div>
+
+    <div class="ml-5 mb-5" *ngIf="showSampleForm">
+      <form [formGroup]="sampleForm" (ngSubmit)="onSubmitSample(sampleForm.value)">
+        <div class="row mt-4">
+          <div class="form-group col-md-7 mb-2">
+            <select type="" class="form-control" placeholder="" formControlName="sample"
+             [ngClass]="{ 'is-invalid': submitted &amp;&amp; sampleForm.controls.sample.errors }">
+             <option value="">Select Sample Type</option>
+             <option *ngFor="let sample of sampleTemplateData" value="{{sample.id}}">{{sample.name}}</option> 
+             </select>
+             <div *ngIf="submitted &amp;&amp; sampleForm.controls.sample.errors" class="text-danger validation-error">
+               <div *ngIf="sampleForm.controls.sample.errors.required">Sample is required</div> 
+             </div>
+            </div> 
+
+            <button class="btn btn button-login " >
+              Add
+            </button>
+        </div>
+        
+      </form>
+
+    </div>
+
+    <div class="card-body m-4 shadow border " *ngIf="sampledata.length > 0">
+      <div class="">
+        <h5>Number of selected Samples: {{sampledata.length}}</h5>
+      </div>
+      <ul class="todo-list-li" >
+
+        <div *ngFor="let sample of sampledata; index as i">
+         
+          <li class="border">
+            <div class="icheck-primary d-inline ml-2 ">
+              <!-- <input type="checkbox" [value]="sample.id" checked="{{sample.done == 1}}"  name="todo1"
+                id="todoCheck{{i+1}}"> -->
+              <label for="todoCheck{{i+1}}"></label>
+              <div class="" *ngFor="let template of sampleTemplateData">
+                <span class="text" *ngIf="sample === template.id">Name: {{ template.name }}
+                <span class="text ml-4">Tests: {{ template.testTemplates.length }}</span>
+                <span title="Delete">
+                  <a (click)="deleteSample(sample.id)"
+                    class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
+                    Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                </span> 
+                </span>
+              </div>
+            </div>
+
+ 
+
+          </li>
+        </div>
+
+      </ul>
+      <a class="btn button-login mb-3" (click)="createClient()">
+        Submit
+        </a>
+    </div>
+  </div>
+</ng-template>

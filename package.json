@@ -83,10 +83,14 @@
   },
   "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.2.",
   "main": "karma.conf.js",
-  
+  "repository": {
+    "type": "git",
+    "url": "git+https://ChikaHenry@bitbucket.org/nownowfintech/nasarwa-payemodule-ui.git"
+  },
   "keywords": [
     "nownow"
   ],
   "author": "chika",
-  "license": "ISC", 
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/nownowfintech/nasarwa-payemodule-ui#readme"
 }

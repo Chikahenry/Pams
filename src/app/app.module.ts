@@ -51,6 +51,7 @@ import { HomeComponent } from './home/home.component';
 import { NgxPrintModule} from 'ngx-print';
 import { SampleTemplateComponent } from './sampling/sampleTemplate/sampleTemplate.component';
 import { ForwardedSamplingComponent } from './sampling/forwardedSampling/forwardedSampling.component';
+import { ClientsComponent } from './client/clients/clients.component';
 // import { FileUploadModule } from 'ng2-file-upload';
 
 
@@ -78,6 +79,7 @@ import { ForwardedSamplingComponent } from './sampling/forwardedSampling/forward
     MyprofileComponent, 
     NotificationComponent,
     ForgotpasswordComponent,
+    ClientsComponent,
     VerifyotpComponent,
     ResetpasswordComponent, 
       PaymenthistoryComponent,

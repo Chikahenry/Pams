@@ -9,34 +9,31 @@ import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-sampleTemplate',
-  templateUrl: './sampleTemplate.component.html',
-  styleUrls: ['./sampleTemplate.component.scss']
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
+  styleUrls: ['./clients.component.scss']
 })
-export class SampleTemplateComponent implements OnInit {
+export class ClientsComponent implements OnInit {
   apiUrl: string;
-  sampletemplatesData: any;
+  clientsData: any;
   dtOptions: any = {};
   modalOptions: NgbModalOptions;
   closeResult: string; 
-  sampleTemplateForm: FormGroup; 
+  clientForm: FormGroup; 
   submitted: boolean = false;
-  selectedsampleTemplate: any;
-  corporateLogo: any;
-  sampleTemplateYear: string;
-  sampleTemplateMonth: any;
-  showPrintInvoice: boolean = false;
-  sampleTemplateID: any; 
-  testsForm: FormGroup;
+  selectedclient: any;  
+  clientID: any; 
+  sampleForm: FormGroup;
   showSampleForm: boolean;
-  sampleName: any;
-  sampleType: any;
-  showTestForm: boolean;
-  testdata: {}[];
-  singleSampleName: any;
-  singleSampleType: any;
-  testTemplate: [];
-  updateTestsForm: FormGroup;
+  clientName: any; 
+  singleClientName: any;  
+  updatesamplesForm: FormGroup; 
+  showClientForm: boolean;
+  sampledata: any[]; 
+  sampleTemplateData: any;
+  address: any;
+  email: any;
+  clientEmail: any;
 
   constructor(private formBuilder: FormBuilder,
               private httpClient: HttpClient,
@@ -47,20 +44,21 @@ export class SampleTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.sess.checkLogin(); 
-    this.getsampletemplates(); 
+    this.getclients(); 
+    this.getSampleTemplates()
     this.intialiseTableProperties();
     console.log('token: ', localStorage.getItem('access_token'));
 
   }
   initialiseForms() {
-    this.sampleTemplateForm = this.formBuilder.group({
+    this.clientForm = this.formBuilder.group({
       name: ['', Validators.required],
-      sampleType: ['', Validators.required], 
+      email: ['', Validators.required],
+      address: ['', Validators.required], 
     });
 
-    this.testsForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      limit: ['', Validators.required], 
+    this.sampleForm = this.formBuilder.group({
+      sample: ['', Validators.required], 
     });
   }
 
@@ -105,9 +103,9 @@ export class SampleTemplateComponent implements OnInit {
     };
   } 
 
-  getsampletemplates() {
+  getclients() {
     this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + 'Sample/sampleTemplates';
+    this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -115,64 +113,78 @@ export class SampleTemplateComponent implements OnInit {
     });
   
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
-      console.log('sampletemplatesData: ', data);
-      this.sampletemplatesData = data.returnObject == null ? [] : data.returnObject;
+      console.log('clientsData: ', data);
+      this.clientsData = data.returnObject == null ? [] : data.returnObject;
       this.spinnerService.hide();
     });
   }
  
 
-  viewAddSampleTemplate(modal){
+  viewAddClient(modal){
     this.initialiseForms()
-    this.showSampleForm = true
-    this.testdata = []
+    this.showClientForm = true
+    this.showSampleForm = false
+    this.sampledata = []
     this.showModal(modal)
   }
 
-  onSubmitSample(formAllData) {
+  onSubmitClient(formAllData) {
    
     this.submitted  = true
-    if(this.sampleTemplateForm.invalid) {
+    if(this.clientForm.invalid) {
       return
     }
 
-     this.sampleName = formAllData.name
-     this.sampleType = formAllData.sampleType
+     this.clientName = formAllData.name 
+     this.address = formAllData.address 
+     this.email = formAllData.email 
 
-     this.showSampleForm = false
-     this.showTestForm = true
+     this.showClientForm = false
+     this.showSampleForm = true
      this.submitted = false
   }
 
-  onSubmitTest(formAllData) {
+  onSubmitSample(formAllData) {
     this.submitted  = true
-    if(this.testsForm.invalid) {
+    if(this.sampleForm.invalid) {
       return
     }
 
-    let obj = {
-      name: formAllData.name,
-      limit: formAllData.limit
+    let obj = formAllData.sample
+    
 
-    }
-
-     this.testdata.push(obj)
-     console.log("werty", this.testdata)
+     this.sampledata.push(obj)
+     console.log("werty", this.sampledata)
      this.submitted = false
-     this.testsForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      limit: ['', Validators.required], 
+     this.sampleForm = this.formBuilder.group({
+      sample: ['', Validators.required], 
+    });
+  }
+
+  getSampleTemplates() { 
+    this.apiUrl = environment.AUTHAPIURL + 'sample/sampleTemplates';
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsData: ', data);
+      this.sampleTemplateData = data.returnObject == null ? [] : data.returnObject;
+       
     });
   }
   
-  createSampleTemplate() {
-    this.spinnerService.show();
-    this.apiUrl = environment.AUTHAPIURL + 'sample/sampletemplate';
+  createClient() {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + 'client/createclient';
 
     const jsondata = {
-      name: this.sampleName,
-      sampleType: this.sampleType,
-      tests: this.testdata
+      name: this.clientName,
+      email: this.email,
+      address: this.address,
+      sampleTemplateIDs: this.sampledata
     }
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -180,7 +192,7 @@ export class SampleTemplateComponent implements OnInit {
     });
 
     this.httpClient.post<any>(this.apiUrl, jsondata, { headers: reqHeader }).subscribe(data => {
-      console.log('singlesampleTemplateData: ', data);
+      console.log('singleclientData: ', data);
       
       if(data.status == true) {
         Swal.fire({
@@ -190,7 +202,7 @@ export class SampleTemplateComponent implements OnInit {
           showConfirmButton: true,
           timer: 5000,
         });
-        this.getsampletemplates();
+        this.getclients();
       }else {
         Swal.fire({
           icon: "error",
@@ -206,23 +218,26 @@ export class SampleTemplateComponent implements OnInit {
     });
   }  
 
-  deleteTest(test) {
+  deleteSample(test) {
+
+  }
+  onUpdateClient() {
 
   }
 
-  viewSingleSample(modal, singlesampleTemplate) {
-    this.updateTestsForm = this.formBuilder.group({
+  viewSingleClient(modal, singleclient) {
+    this.updatesamplesForm = this.formBuilder.group({
       name: ['', Validators.required],
       limit: ['', Validators.required], 
     });
     this.showModal(modal)
-    this.singleSampleName = singlesampleTemplate.name
-    this.singleSampleType = singlesampleTemplate.sampleType
-    this.testTemplate = singlesampleTemplate.testTemplates
+    this.singleClientName = singleclient.name
+    this.clientEmail = singleclient.email
+    // this.testTemplate = singleclient.testTemplates
   }
 
   editTest(test) {
-    this.updateTestsForm = this.formBuilder.group({
+    this.updatesamplesForm = this.formBuilder.group({
       name: [test.name, Validators.required],
       limit: [test.limit, Validators.required], 
     });

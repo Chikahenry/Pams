@@ -26,6 +26,7 @@ import { ContactusComponent } from './contactus/contactus.component';
 import { HomeComponent } from './home/home.component';
 import { SampleTemplateComponent } from './sampling/sampleTemplate/sampleTemplate.component';
 import { ForwardedSamplingComponent } from './sampling/forwardedSampling/forwardedSampling.component';
+import { ClientsComponent } from './client/clients/clients.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -54,6 +55,7 @@ const routes: Routes = [
   {path: 'deletedemployees', component: DeletedemployeesComponent},
   {path: 'sampleTemplate', component: SampleTemplateComponent},
   {path: 'forwardedSampling', component: ForwardedSamplingComponent},
+  {path: 'client', component: ClientsComponent},
   
   {path: 'companyprofile/:id', component: CompanyprofileComponent},
 
@@ -64,7 +66,7 @@ const routes: Routes = [
   {path: 'contactus', component: ContactusComponent}, 
   {path: 'notification', component: NotificationComponent},
   {path: 'verifyotp', component: VerifyotpComponent}, 
-  {path: 'home', component: HomeComponent},
+  // {path: 'home', component: HomeComponent},
 
   {path: '**', component: PagenotfoundComponent}
 ];
