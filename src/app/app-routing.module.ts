@@ -66,7 +66,7 @@ const routes: Routes = [
   {path: 'contactus', component: ContactusComponent}, 
   {path: 'notification', component: NotificationComponent},
   {path: 'verifyotp', component: VerifyotpComponent}, 
-  // {path: 'home', component: HomeComponent},
+  {path: 'home', component: HomeComponent},
 
   {path: '**', component: PagenotfoundComponent}
 ];
