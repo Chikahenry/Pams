@@ -91,14 +91,6 @@ export class DashboardComponent implements OnInit {
 
     });
   }
-
-  getAll() {
-    const urlAll = environment.COVID_LIVE + 'all';
-    this.httpClient.get<any>(urlAll)
-            .subscribe(res => {
-              console.log(res);
-              this.all = res;
-            });
-  }
+ 
 
 }

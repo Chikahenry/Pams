@@ -48,8 +48,7 @@ export class VerifyotpComponent implements OnInit {
 
     const obj = {
       otp: formAllData.otp,
-      username: localStorage.getItem('otp_username'),
-      application_id: environment.APPLICATION_ID
+      username: localStorage.getItem('otp_username'), 
     };
     this.postData(obj);
   }
