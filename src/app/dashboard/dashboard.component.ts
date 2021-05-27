@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashboardData() {
-    this.apiUrl = environment.AUTHAPIURL + 'dashboard';
+    // this.apiUrl = environment.AUTHAPIURL + 'dashboard';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getEmployees() {
-    this.apiUrl = environment.AUTHAPIURL + 'employees-list';
+    // this.apiUrl = environment.AUTHAPIURL + 'employees-list';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',

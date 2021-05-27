@@ -76,7 +76,7 @@ export class ChangepasswordComponent implements OnInit {
   }
 
   postChangePassword(jsonData: any) {
-    this.apiUrl = environment.AUTHAPIURL + 'users/change-password';
+    this.apiUrl = environment.AUTHAPIURL + 'account/changepassword';
 
     const reqHeader = new HttpHeaders({
        'Content-Type': 'application/json',
