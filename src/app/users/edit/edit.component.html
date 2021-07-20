@@ -45,11 +45,11 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="role">Role Name</label>
-                <select class="form-control" id="role" formControlName="role" [(ngModel)]="userRecord.role_id"
+                <select class="form-control" id="role" formControlName="role" [(ngModel)]="userRecord.roleId"
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; editForm.controls.role.errors }">
                   <option value="">Select</option>
-                  <option *ngFor="let role of roles" value="{{role.id}}" >
-                    {{role.name}}
+                  <option *ngFor="let role of roles" value="{{role.roleId}}" >
+                    {{role.roleName}}
                   </option>
                 </select>
                 <div *ngIf="submitted &amp;&amp; editForm.controls.role.errors" class="text-danger">

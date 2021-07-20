@@ -1,0 +1,393 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31"> 
+          <!-- SELECT2 EXAMPLE -->
+          <div class="card card-secondary">
+              <div class="card-header row custome">
+                <div class="col-md-8">
+                  <h3 class="card-title">All Invoices </h3>
+
+                </div>  </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                  <div>
+                      
+                      <table class="table table-bordered table-condensed" *ngIf="invoicesData;" datatable
+                          [dtOptions]="dtOptions" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Client Name</th> 
+                                  <th>Client Address</th>   
+                                  <th>Client Email</th>    
+                                  <th>Date Generated</th>    
+                                  <th>Due Date</th>    
+                                  <th>Invoice number</th>  
+                                  <th>Status</th> 
+                                  <th>Details</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of invoicesData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.clientName | titlecase }}</td>
+                                  <td>{{ mydata.clientAddress | titlecase }}</td>
+                                  <td>{{ mydata.clientEmail | titlecase }}</td>
+                                  <td>{{ mydata.dateGenerated }}</td>
+                                  <td>{{ mydata.dueDate  }}</td>
+                                  <td>{{ mydata.invoiceNumber }}</td> 
+                                  <td>{{ mydata.status }}</td> 
+                                  <td>
+                                      <button title="Update Status" class="btn btn-sm btn-outline-success mr-3"
+                                          (click)="viewUpdateStatus(mymodal, mydata)"><i class="nav-icon fas fa-edit"></i>
+                                      </button>
+                                      <button title="Send to Client" class="btn btn-sm btn-outline-primary mr-3 " *ngIf="mydata.status === 'Paid'" (click)="sendEmail(mydata.id)"><i class="nav-icon fas fa-file"></i>
+                                      </button>
+                                        <button title="Download" class="btn btn-sm btn-outline-warning mr-3" *ngIf="mydata.status === 'Paid'" (click)="download(mydata.id)"><i class="nav-icon fas fa-download"></i>
+                                  </button>
+                                  <button title="Generate Report" class="btn btn-sm btn-outline-secondary " *ngIf="mydata.status === 'Paid'" (click)="generateReport(reportModal, mydata.clientID)"><i class="nav-icon fas fa-download"></i>
+                                  </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
+                      Schedule</button> -->
+              </div>
+          </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<ng-template #mymodal let-modal >
+  <div   class="validate-form mt-2">
+    <div class="card-header">
+      <h4 class=" bold-black">Approve Payment</h4>
+
+    </div>
+
+    <div class="mt-2 ml-3 mb-4" >
+      <div class=" ml-4 mb-4">
+         <h6>Confirm status Update</h6>
+        
+
+         <div class="row">
+          <button *ngIf="!paid" class="btn button-login mr-5" (click)="updateStatus()">Update to Paid</button>
+          <button *ngIf="paid" class="btn button-login mr-5" (click)="updateStatus()">Update to Pending</button>
+      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
+    </div>
+      </div>
+    </div>  
+  </div>
+</ng-template>
+   
+
+<ng-template #reportModal let-modal>
+  <div   class="validate-form mt-2">
+    <div class="card-header">
+      <h4 class=" bold-black">All Samplings for {{clientName}}</h4>
+
+    </div>
+
+    <div class="mt-2 ml-3 mb-4" >
+      <div class=" m-3">
+         <h6>Generate Report</h6>
+         <form [formGroup]="reportForm"  > 
+            <div class="row"> 
+              <div class="col-md-4">
+                <label class="form-label">Batch Number<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input type="text" class="form-control" id="batchNumber" formControlName="batchNumber" maxlength="20" placeholder="Batch Number"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.batchNumber.errors }">
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.batchNumber.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.batchNumber.errors.required">Batch Number is required</div> 
+                  </div> 
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Sample Ref Number</label>
+                <input type="text" class="form-control" id="sampleRefNumber" formControlName="sampleRefNumber"
+                  placeholder="Sample Ref Number"  maxlength="20"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.sampleRefNumber.errors }">
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.sampleRefNumber.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.sampleRefNumber.errors.required">Sample Ref Number is required</div>  
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Certificate Number<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input type="text" class="form-control" formControlName="certificateNumber" placeholder="Certificate Number"  maxlength="20"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.certificateNumber.errors }">
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.certificateNumber.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.certificateNumber.errors.required">Certificate Number is required</div> 
+                </div>
+              </div>
+
+
+              <div class="form-group col-md-4 mt-2">
+                <label for="inputState">Sample Label<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input id="inputState" class="form-control" formControlName="sampleLabel" placeholder="Sample label"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.sampleLabel.errors }"> 
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.sampleLabel.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.sampleLabel.errors.required">Sample Label is required</div>
+                </div>
+              </div> 
+            <div class="form-group col-md-4 mt-2">
+              <label for="inputState">Humidity<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+              <input id="inputState" class="form-control" formControlName="humidity" placeholder="Humidity"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.humidity.errors }"> 
+              <div *ngIf="submitted &amp;&amp; reportForm.controls.humidity.errors"
+                class="form-text text-danger">
+                <div *ngIf="reportForm.controls.humidity.errors.required">Humidity is required</div>
+              </div>
+            </div> 
+          <div class="form-group col-md-4 mt-2">
+            <label for="inputState">Temperature<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+            <input id="inputState" class="form-control" formControlName="temperature" placeholder="Temperature"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.temperature.errors }"> 
+            <div *ngIf="submitted &amp;&amp; reportForm.controls.temperature.errors"
+              class="form-text text-danger">
+              <div *ngIf="reportForm.controls.temperature.errors.required">Temperature is required</div>
+            </div>
+          </div>
+              <div class="form-group col-md-4 mt-2">
+                <label for="inputState">Sample Type<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input id="inputState" class="form-control" formControlName="sampleType" placeholder="Sample Type"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.sampleType.errors }"> 
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.sampleType.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.sampleType.errors.required">Sample Type is required</div>
+                </div>
+              </div>
+
+              <div class="col-md-4 mt-2">
+                <label class="form-label">Date Recieved in lab<sup
+                    class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input type="date" class="form-control" max="{{date | date:'yyyy-MM-dd'}}" formControlName="dateRecieved" placeholder=""
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.dateRecieved.errors }">
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.dateRecieved.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.dateRecieved.errors.required">Date Recieved in lab is required</div>
+                </div>
+              </div> 
+              <div class="col-md-4 mt-2">
+                <label class="form-label">Date Analysed in lab<sup
+                    class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <input type="date" class="form-control" max="{{date | date:'yyyy-MM-dd'}}" formControlName="dateAnalysed" placeholder=""
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.dateAnalysed.errors }">
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.dateAnalysed.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.dateAnalysed.errors.required">Date Analysed in lab is required</div>
+                </div>
+              </div>  
+
+              <div class="col-lg-12">
+                <h3 class="dashboard-heading-1 minus-top-2">Microbiological Analysis</h3>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Microbial group<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="35" formControlName="microbialGroup" placeholder="Microbial Group"
+                    [ngClass]="{ 'is-invalid': microbialGroup }">
+                  <div *ngIf="microbialGroup "
+                    class="form-text text-danger">
+                    <div >Microbial Group is required</div>
+                  </div>
+                </div> 
+                <div class="form-group col-md-4">
+                  <label class="form-label">Result<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="result" placeholder="Result"
+                    [ngClass]="{ 'is-invalid': result }">
+                   
+                  <div *ngIf="result " class="form-text text-danger">
+                    <div >Result is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Unit<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="unit" placeholder="Unit"
+                    [ngClass]="{ 'is-invalid': unit }">
+                  <div *ngIf="unit " class="form-text text-danger">
+                    <div >Unit is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Limit<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="limit" placeholder="Limit"
+                    [ngClass]="{ 'is-invalid': limit }">
+                  <div *ngIf="limit " class="form-text text-danger">
+                    <div >Limit is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Test Method<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="testMethod" placeholder="Test Method"
+                    [ngClass]="{ 'is-invalid': testMethod }">
+                  <div *ngIf="testMethod " class="form-text text-danger">
+                    <div >Test Method is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4" style="margin-top: 26px;"> 
+                  <!-- <a class="btn button-login" > <i class="far fa-plus-square"></i> Add destination</a> -->
+                  <a class="btn button-login" (click)="addMicrobial()"> <i class="far fa-plus-square"></i> Add Microbiological</a>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-12 m-3" >
+                  <table class="table table-bordered table-condensed" *ngIf="microbiologicalData.length > 0;" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Microbial Group</th> 
+                                  <th>Result</th>   
+                                  <th>Unit</th>    
+                                  <th>Limit</th>  
+                                  <th>Test Method</th>  
+                                  <th>Action</th>
+                                </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of microbiologicalData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.microbial_Group | titlecase }}</td>
+                                  <td>{{ mydata.result | titlecase }}</td>
+                                  <td>{{ mydata.unit | titlecase }}</td>
+                                  <td>{{ mydata.limit }}</td>
+                                  <td>{{ mydata.test_Method  }}</td> 
+                                  <td>
+                                      <button title="Delete" class="btn btn-sm btn-outline-danger mr-3"
+                                          (click)="removeMicrobialData(mydata)"><i class="nav-icon fas fa-trash-alt"></i>
+                                      </button> 
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                </div>
+                
+              </div>
+
+              
+              <div class="col-lg-12">
+                <h3 class="dashboard-heading-1 minus-top-2">PhysioChemical Analysis</h3>
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Test Performed and unit<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="35" formControlName="testAndUnit" placeholder="Test and unit"
+                    [ngClass]="{ 'is-invalid': testAndUnit }">
+                  <div *ngIf="testAndUnit "
+                    class="form-text text-danger">
+                    <div >Test and Unit is required</div>
+                  </div>
+                </div> 
+                <div class="form-group col-md-4">
+                  <label class="form-label">Result<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="resultPH" placeholder="Result"
+                    [ngClass]="{ 'is-invalid': resultPH }">
+                   
+                  <div *ngIf="resultPH " class="form-text text-danger">
+                    <div >Result is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Uc<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="uc" placeholder="Uc"
+                    [ngClass]="{ 'is-invalid': uc }">
+                  <div *ngIf="uc " class="form-text text-danger">
+                    <div >Uc is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Limit<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="limitPH" placeholder="Limit"
+                    [ngClass]="{ 'is-invalid': limitPH }">
+                  <div *ngIf="limitPH " class="form-text text-danger">
+                    <div >Limit is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4 form-group"> 
+                  <label class="form-label">Test Method<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                  <input type="text" class="form-control" id="" maxlength="20" formControlName="testMethodPH" placeholder="Test Method"
+                    [ngClass]="{ 'is-invalid': testMethodPH }">
+                  <div *ngIf="testMethodPH " class="form-text text-danger">
+                    <div >Test Method is required</div>
+                  </div>
+                </div>
+                <div class="col-md-4" style="margin-top: 26px;"> 
+                  <!-- <a class="btn button-login" > <i class="far fa-plus-square"></i> Add destination</a> -->
+                  <a class="btn button-login" (click)="addPhysicoChemical()"> <i class="far fa-plus-square"></i> Add PhysicoChemical</a>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-12 m-3" >
+                  <table class="table table-bordered table-condensed" *ngIf="physicoChemicalData.length > 0;" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Test Performed</th>
+                                  <th>Result</th>   
+                                  <th>UC</th>    
+                                  <th>Limit</th>  
+                                  <th>Test Method</th>  
+                                  <th>Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of physicoChemicalData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.test_Performed_And_Unit | titlecase }}</td>
+                                  <td>{{ mydata.result | titlecase }}</td>
+                                  <td>{{ mydata.uc | titlecase }}</td>
+                                  <td>{{ mydata.limit }}</td>
+                                  <td>{{ mydata.test_Method  }}</td> 
+                                  <td>
+                                      <button title="Delete" class="btn btn-sm btn-outline-danger mr-3"
+                                          (click)="removePhysicoChemicalData(mydata)"><i class="nav-icon fas fa-trash-alt"></i>
+                                      </button> 
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                </div>
+                
+              </div>
+              </div>
+              <div class="form-group col-md-12 mt-2">
+                <label for="inputState">Comment<sup class="ml-1 font-weight-bolder text-danger">*</sup></label>
+                <textarea id="inputState" class="form-control" formControlName="comment" placeholder="Comment" rows="7"
+                  [ngClass]="{ 'is-invalid': submitted &amp;&amp; reportForm.controls.comment.errors }"> </textarea>
+                <div *ngIf="submitted &amp;&amp; reportForm.controls.comment.errors"
+                  class="form-text text-danger">
+                  <div *ngIf="reportForm.controls.comment.errors.required">Comment is required</div>
+                </div>
+              </div>
+              <div class="col-md-12 mt-2 text-center mb-5 mt-5">
+                <!-- <button type="" class="btn btn-primary theme-btn"><i class="fas fa-angle-double-left"></i> Back  </button> -->
+                <button type="submit" (click)="submitReportForm(reportForm.value)" class="btn btn-primary theme-btn ml-3">Submit <i class="fas fa-angle-double-right"></i> </button>
+              </div>
+          </form>
+ 
+      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
+     
+      </div>
+    </div>  
+  </div>
+</ng-template>

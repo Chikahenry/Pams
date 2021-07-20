@@ -42,29 +42,33 @@ import { VerifyotpComponent } from './auth/verifyotp/verifyotp.component';
 import { ResetpasswordComponent } from './auth/resetpassword/resetpassword.component';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter'; 
 import { SignupComponent } from './auth/signup/signup.component'; 
-import { MyprofileComponent } from './profile/myprofile/myprofile.component';
-import { CompanyprofileComponent } from './profile/companyprofile/companyprofile.component'; 
-import { DeletedemployeesComponent } from './profile/deletedemployees/deletedemployees.component';
+// import { MyprofileComponent } from './profile/myprofile/myprofile.component'; 
 import { PaymenthistoryComponent } from './paymenthistory/paymenthistory.component';
 import { ContactusComponent } from './contactus/contactus.component';
 import { HomeComponent } from './home/home.component';
 import { NgxPrintModule} from 'ngx-print';
 import { SampleTemplateComponent } from './sampling/sampleTemplate/sampleTemplate.component';
 import { ForwardedSamplingComponent } from './sampling/forwardedSampling/forwardedSampling.component';
+import { FieldsamplingComponent } from './sampling/fieldsampling/fieldsampling.component';
+import { LabtestComponent } from './sampling/labtest/labtest.component';
 import { ClientsComponent } from './client/clients/clients.component';
 // import { FileUploadModule } from 'ng2-file-upload';
+import { InvoicingComponent } from './invoicing/invoicing.component';
+import { ReportComponent } from './report/report.component';
 
 
 @NgModule({
-  declarations: [		
+  declarations: [				
     AppComponent,
     HeaderComponent,
     SidebarComponent,
     DashboardComponent,
     FooterComponent,
-    EditComponent, 
-    DeletedemployeesComponent,
+    EditComponent,  
     LoginComponent,
+    InvoicingComponent,
+    FieldsamplingComponent,
+    LabtestComponent,
     SignupComponent, 
     PagenotfoundComponent,
     LogoutComponent,
@@ -73,18 +77,19 @@ import { ClientsComponent } from './client/clients/clients.component';
     DisplayuserComponent,
     ChangepasswordComponent, 
     SampleTemplateComponent, 
-    ForwardedSamplingComponent, 
-    CompanyprofileComponent, 
-    FaqComponent,
-    MyprofileComponent, 
+    ForwardedSamplingComponent,  
+    FaqComponent, 
     NotificationComponent,
     ForgotpasswordComponent,
     ClientsComponent,
     VerifyotpComponent,
     ResetpasswordComponent, 
+    ReportComponent, 
       PaymenthistoryComponent,
       ContactusComponent,
-      HomeComponent
+      HomeComponent,
+      InvoicingComponent,
+      ReportComponent
    ],
   imports: [
     BrowserModule,

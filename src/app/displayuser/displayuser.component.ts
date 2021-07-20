@@ -23,11 +23,12 @@ export class DisplayuserComponent implements OnInit {
   modalOptions: NgbModalOptions;
   closeResult: string;
   roleID: any;
-  managerRole: boolean = false;
+  adminRole: boolean = false;
   noRole: boolean = false;
   userID: any;
   corporateId: any;
   submitted: boolean;
+  roles: any;
   // tslint:disable-next-line: max-line-length
   constructor(
     private httpClient: HttpClient,
@@ -48,9 +49,11 @@ export class DisplayuserComponent implements OnInit {
     // if (this.roleID != 1) {
     //   this.router.navigate(['/logout']);
     //  }
-    if(this.roleID === '5') {
-      this.managerRole = true;
-    }  
+    // if(this.roleID === '5') {
+    //   this.adminRole = true;
+    // }  
+    this.getUserData()
+    this.getRole()
 
     this.modalOptions = {
       backdrop: true,
@@ -157,53 +160,110 @@ export class DisplayuserComponent implements OnInit {
   }
  
   getUserData() {
-    this.apiUrl = environment.AUTHAPIURL + 'users-list';
+    this.apiUrl = environment.AUTHAPIURL + 'management/getusers';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
     });
 
-    this.spinnerService.show();
-    // this.httpClient
-    // .post<any>(this.apiUrl, { headers: reqHeader })
-    // .subscribe((data) => {
+    this.spinnerService.show(); 
 
-    this.httpClient.post<any>(this.apiUrl, {}, { headers: reqHeader }).subscribe(data => {
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
       console.log(data);
-      this.apidata = data.response.data;
+      this.apidata = data.returnObject;
       this.spinnerService.hide();
       });
   }
 
-  changeStatus(user_Id: any, status: number) {
+  getRole() {
+    this.apiUrl = environment.AUTHAPIURL + 'management/getusertypes';
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    });
+    return this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((res) => {
+      console.log(res.response);
+      this.roles = res.response;
+ 
+    });
+  } 
+
+  userToStaff(userId){
+    let staffId = "e828f639-10ae-4cc0-b955-e0d3dfef63f0"
+    this.apiUrl = environment.AUTHAPIURL + 'management/changeuserrole/' + userId + "/" + staffId;
+
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + localStorage.getItem('access_token'),
     });
 
-    // alert(id);
-    let newstatus = '';
-    if (status === 1) {
-      newstatus = '0';
-    } else {
-      newstatus = '1';
-    }
-    const obj = {
-      id: user_Id,
-      active: newstatus,
-      // admin_user_id: localStorage.getItem('id'),
-      // admin_user_name: localStorage.getItem('username'),
-      // admin_role: localStorage.getItem('role_name')
-    };
+    this.spinnerService.show(); 
 
-    this.apiUrl = environment.AUTHAPIURL + 'users/update';
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log(data);
+      this.getUserData()
+      this.spinnerService.hide();
+      });
+  }
+
+  userToAdmin(userId){
+    let adminId = "ac83a4a4-dc59-4e6f-b922-a1b3ecc2ac51"
+    this.apiUrl = environment.AUTHAPIURL + 'management/changeuserrole/' + userId + "/" + adminId;
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    });
+
+    this.spinnerService.show(); 
+
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log(data);
+      this.getUserData()
+      this.spinnerService.hide();
+      });
+  }
+
+  disableUser(user_Id: any) {
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    });
+ 
+
+    this.apiUrl = environment.AUTHAPIURL + 'management/disableuser/' + user_Id;
     this.spinnerService.show(); // show the spinner
     this.httpClient
-      .post<any>(this.apiUrl, obj, { headers: reqHeader })
+      .get<any>(this.apiUrl,{ headers: reqHeader })
       .subscribe((data) => {
         console.log(data);
-        this.apidata = data.response;
+        // this.apidata = data.returnObject;
+        Swal.fire({
+          icon: 'info',
+          text: data.message,
+          showConfirmButton: false,
+          timer: 5000,
+        });
+        this.getUserData();
+        this.spinnerService.hide(); // hide the spinner if success
+      });
+  }
+
+  enableUser(user_Id: any) {
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    });
+ 
+
+    this.apiUrl = environment.AUTHAPIURL + 'management/enableuser/' + user_Id;
+    this.spinnerService.show(); // show the spinner
+    this.httpClient
+      .get<any>(this.apiUrl,{ headers: reqHeader })
+      .subscribe((data) => {
+        console.log(data);
+        // this.apidata = data.returnObject;
         this.getUserData();
         this.spinnerService.hide(); // hide the spinner if success
       });

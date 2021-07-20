@@ -43,17 +43,16 @@ export class EditComponent implements OnInit {
     // Check User Login
     this.sess.checkLogin();
     this.roleID = localStorage.getItem('role_id');
-    if(this.roleID!= 5) {
-      this.router.navigate(['/dashboard']);
-     }
+    // if(this.roleID != 5) {
+    //   this.router.navigate(['/dashboard']);
+    //  }
 
     // this.roleID = localStorage.getItem('role_id');
     // if (this.roleID != 5) {
     // this.router.navigate(['/logout']);
     // }
 
-    this.getUserById();
-    this.getApplication();
+    this.getUserById(); 
 
     this.editForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(4)]],
@@ -64,47 +63,15 @@ export class EditComponent implements OnInit {
   }
 
   getRole() {
-    this.apiUrl = environment.AUTHAPIURL + 'roles';
+    this.apiUrl = environment.AUTHAPIURL + 'management/getuser';
 
     return this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
       console.log(res.response);
-      this.roles = res.response;
-
-      const arr = [];
-      for (const obj of this.roles) {
-        // console.log(obj);
-        arr.push({
-          id: obj.id,
-          role_name: obj.role_name,
-          status: obj.status,
-        });
-        this.myroles = arr;
-      }
+      this.roles = res.returnObject;
+ 
     });
   }
-
-  getApplication() {
-    this.apiUrl = environment.AUTHAPIURL + 'applications/1/roles';
-    this.spinnerService.show();
-    return this.httpClient.get<any>(this.apiUrl)
-            .subscribe(res => {
-              console.log(res.response);
-              this.applications = res.response;
-              this.roles = res.response;
-              this.spinnerService.hide();
-              const arr = [];
-              for (const obj of this.applications) {
-                // console.log(obj);
-                arr.push({
-                  id: obj.id,
-                  application_name: obj.application_name,
-                  status: obj.status
-                });
-                this.myapplications = arr;
-              }
-
-            });
-  }
+ 
 
   onSubmit(formAllData: any) {
     this.submitted = true;
@@ -115,16 +82,14 @@ export class EditComponent implements OnInit {
     console.log(formAllData);
 
     const obj = {
-      id: this.userId,
-      name: formAllData.name,
-      role_id: formAllData.role,
-      phone: formAllData.phone
+      id: this.userId, 
+      roleId: formAllData.role
     };
     this.postData(obj);
   }
 
   postData(jsonData: any) {
-    this.apiUrl = environment.AUTHAPIURL + 'users/update';
+    this.apiUrl = environment.AUTHAPIURL + 'changeuserrole/' + jsonData.id + "/" + jsonData.roleId;
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -145,7 +110,7 @@ export class EditComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text:  data.response != null && data.response[0] != undefined ? data.response[0].message : data.message,
+            text:   data.message,
             showConfirmButton: true,
             timer: 5000,
           });
@@ -155,7 +120,7 @@ export class EditComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text:  data.response != null && data.response[0] != undefined ? data.response[0].message : data.message,
+            text:   data.message,
             showConfirmButton: true,
             timer: 5000,
           });
@@ -165,7 +130,7 @@ export class EditComponent implements OnInit {
 
   getUserById() {
 
-    this.apiUrl = environment.AUTHAPIURL + 'users/' + this.userId;
+    this.apiUrl = environment.AUTHAPIURL + 'management/getusers' ;
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -174,8 +139,10 @@ export class EditComponent implements OnInit {
 
     this.spinnerService.show();
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe((data) => {
-        console.log(data);
-        this.userRecord = data.response;
+        console.log(data); 
+        this.userRecord =  data.returnObject.filter( (hero) => {
+          return hero.id == this.userId;
+         });
         this.spinnerService.hide();
       });
 

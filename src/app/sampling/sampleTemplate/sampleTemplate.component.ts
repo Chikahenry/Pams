@@ -32,11 +32,13 @@ export class SampleTemplateComponent implements OnInit {
   sampleName: any;
   sampleType: any;
   showTestForm: boolean;
-  testdata: {}[];
+  testdata: {name: string; limit: string }[];
   singleSampleName: any;
   singleSampleType: any;
   testTemplate: [];
-  updateTestsForm: FormGroup;
+  updateSampleTemplateForm: FormGroup;
+  sampleTypeId: number;
+  sampleId: any;
 
   constructor(private formBuilder: FormBuilder,
               private httpClient: HttpClient,
@@ -91,17 +93,17 @@ export class SampleTemplateComponent implements OnInit {
         }
     ],
       dom: '<\'row\'<\'col-sm-4\'l><\'col-sm-4 text-center\'B><\'col-sm-4\'f>>' + '<\'row\'<\'col-sm-12\'tr>>' + '<\'row\'<\'col-sm-5\'i><\'col-sm-7\'p>>',
-      buttons: [
-                // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
-              ]
+      // buttons: [
+      //           // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
+      //         ]
     };
   } 
 
@@ -127,6 +129,52 @@ export class SampleTemplateComponent implements OnInit {
     this.showSampleForm = true
     this.testdata = []
     this.showModal(modal)
+  }
+
+  onUpdateSample(formData) {
+    this.submitted = true
+
+    if (this.updateSampleTemplateForm.invalid) {
+      return
+    }
+
+    const obj = {
+      id: this.sampleId,
+      name: formData.name,
+      sampleType: formData.sampleType
+    }
+    this.apiUrl = environment.AUTHAPIURL + 'sample/sampletemplate';
+    this.spinnerService.show()
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    this.httpClient.put<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+      console.log('sample/sampltemplate: ', data);
+      
+      if(data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        this.getsampletemplates();
+      }else {
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        
+      }
+ 
+      this.spinnerService.hide();
+    });
   }
 
   onSubmitSample(formAllData) {
@@ -191,6 +239,8 @@ export class SampleTemplateComponent implements OnInit {
           timer: 5000,
         });
         this.getsampletemplates();
+        this.initialiseForms()
+        this.sampleName = ''
       }else {
         Swal.fire({
           icon: "error",
@@ -206,27 +256,23 @@ export class SampleTemplateComponent implements OnInit {
     });
   }  
 
-  deleteTest(test) {
-
+  deleteTest(testName) {
+    this.testdata = this.testdata.filter((item) => item.name !== testName)
   }
 
   viewSingleSample(modal, singlesampleTemplate) {
-    this.updateTestsForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      limit: ['', Validators.required], 
+    this.sampleTypeId = singlesampleTemplate.sampleType === "0" ? 0 : 1
+    this.updateSampleTemplateForm = this.formBuilder.group({
+      name: [singlesampleTemplate.name, Validators.required],
+      sampleType: [this.sampleTypeId, Validators.required], 
     });
     this.showModal(modal)
     this.singleSampleName = singlesampleTemplate.name
-    this.singleSampleType = singlesampleTemplate.sampleType
+    this.singleSampleType = singlesampleTemplate.sampleType 
     this.testTemplate = singlesampleTemplate.testTemplates
+    this.sampleId = singlesampleTemplate.id
   }
-
-  editTest(test) {
-    this.updateTestsForm = this.formBuilder.group({
-      name: [test.name, Validators.required],
-      limit: [test.limit, Validators.required], 
-    });
-  }
+ 
     
 
   showModal(modal) {

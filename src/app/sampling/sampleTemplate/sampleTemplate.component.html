@@ -31,7 +31,7 @@
                               <tr>
                                   <th>S/N</th>
                                   <th>Name</th>
-                                  <th>Sample Type</th>  
+                                  <th>Sample Type</th>   3
                                   <th>Number of Tests</th> 
                                   <th  >Details</th>
                               </tr>
@@ -40,7 +40,7 @@
                               <tr *ngFor="let mydata of sampletemplatesData; index as i">
                                   <td>{{ i + 1 }}</td>
                                   <td>{{ mydata.name | titlecase }}</td>
-                                  <td>{{ mydata.sampleType == 1 ? 'Field Sampling' : 'Lab Test' }}</td> 
+                                  <td>{{ mydata.sampleType == 0 ? 'Field Sampling' : 'Lab Test' }}</td> 
                                   <td>{{ mydata.testTemplates.length }}</td> 
                                   <td style="width: 10%">
                                       <button class="btn btn-sm btn-outline-primary"
@@ -75,38 +75,40 @@
     <div class="mt-2 ml-3 mb-4" *ngIf="singleSampleName">
       <h4>{{singleSampleName}} : {{singleSampleType === "1" ? '   (Field Sampling)' : '   (Lab Test)'}}</h4>
 
-    </div> 
-
-    <div class="ml-4 d-none mb-4" *ngIf="">
-      <form [formGroup]="updateTestsForm" (ngSubmit)="onSubmitTest(updateTestsForm.value)">
-        <div class="row mt-4">
-          <div class="form-group mb-2 col-md-5">
-            <input type="text" class="form-control" placeholder="Test Name" formControlName="name"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateTestsForm.controls.name.errors }">
-             
-              <div *ngIf="submitted &amp;&amp; testsForm.controls.name.errors" class="text-danger validation-error">
-                <div *ngIf="testsForm.controls.name.errors.required">Name is required</div> 
-              </div>
-          </div>
-          <div class="form-group col-md-5 mb-2">
-            <input type="text" class="form-control" placeholder="Test Limit" formControlName="limit"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateTestsForm.controls.limit.errors }">
+      <div class=" ml-4 mb-4">
+        <form [formGroup]="updateSampleTemplateForm" (ngSubmit)="onUpdateSample(updateSampleTemplateForm.value)">
+          <div class="row mt-4">
+            <div class="form-group mb-2 col-md-5">
+              <input type="text" class="form-control" placeholder="Sample Name" formControlName="name"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateSampleTemplateForm.controls.name.errors }">
                
-              <div *ngIf="submitted &amp;&amp; updateTestsForm.controls.limit.errors" class="text-danger validation-error">
-                <div *ngIf="updateTestsForm.controls.limit.errors.required">Test Limit is required</div> 
-              </div>
-             
-          </div>
+                <div *ngIf="submitted &amp;&amp; updateSampleTemplateForm.controls.name.errors" class="text-danger validation-error">
+                  <div *ngIf="updateSampleTemplateForm.controls.name.errors.required">Name is required</div> 
+                </div>
+            </div>
+            <div class="form-group col-md-5 mb-2">
+              <select type="" class="form-control" placeholder="" formControlName="sampleType"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateSampleTemplateForm.controls.sampleType.errors }">
+                <option>Select Sample Type</option>
+                <option value="0">Field Sampling</option>
+                <option value="1">Lab Test</option>
+                </select>
+                <div *ngIf="submitted &amp;&amp; updateSampleTemplateForm.controls.sampleType.errors" class="text-danger validation-error">
+                  <div *ngIf="updateSampleTemplateForm.controls.sampleType.errors.required">Sample Type is required</div> 
+                </div>
+               
+            </div>
+      
+            <button class="btn  button-login " >
+              Submit
+            </button>
     
-          <button class="btn btn button-login " >
-            Add
-          </button>
+          </div>
+        </form>
   
-        </div>
-      </form>
-
-    </div>
-
+      </div>
+    </div> 
+ 
     <div class="card-body m-4 shadow border " *ngIf="testTemplate">
       <ul class="todo-list-li" >
 
@@ -227,7 +229,7 @@
               <span class="text ml-4">Limit: {{ test.limit }}</span>
               <span title="Delete">
                 <a (click)="deleteTest(test.name)"
-                  class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
+                  class="badge badge-danger Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
                   Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
               </span> 
             </div>
@@ -241,6 +243,8 @@
       <a class="btn button-login mb-3" (click)="createSampleTemplate()">
         Submit
         </a>
+      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
+
     </div>
   </div>
 </ng-template>

@@ -21,20 +21,23 @@ export class ClientsComponent implements OnInit {
   closeResult: string; 
   clientForm: FormGroup; 
   submitted: boolean = false;
-  selectedclient: any;  
-  clientID: any; 
+  selectedclient: any;   
   sampleForm: FormGroup;
   showSampleForm: boolean;
   clientName: any; 
   singleClientName: any;  
-  updatesamplesForm: FormGroup; 
+  updateClientForm: FormGroup; 
   showClientForm: boolean;
   sampledata: any[]; 
+  addSampledata: any[] = []; 
   sampleTemplateData: any;
   sampleTemplate: any;
   address: any;
   email: any;
   clientEmail: any;
+  clientId: any;
+  clientSamples: any[] = [];
+  addSampleForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
               private httpClient: HttpClient,
@@ -47,6 +50,7 @@ export class ClientsComponent implements OnInit {
     this.sess.checkLogin(); 
     this.getclients(); 
     this.getSampleTemplates()
+    this.initialiseForms()
     this.intialiseTableProperties();
     console.log('token: ', localStorage.getItem('access_token'));
 
@@ -59,6 +63,10 @@ export class ClientsComponent implements OnInit {
     });
 
     this.sampleForm = this.formBuilder.group({
+      sample: ['', Validators.required], 
+    });
+
+    this.addSampleForm = this.formBuilder.group({
       sample: ['', Validators.required], 
     });
   }
@@ -90,22 +98,22 @@ export class ClientsComponent implements OnInit {
         }
     ],
       dom: '<\'row\'<\'col-sm-4\'l><\'col-sm-4 text-center\'B><\'col-sm-4\'f>>' + '<\'row\'<\'col-sm-12\'tr>>' + '<\'row\'<\'col-sm-5\'i><\'col-sm-7\'p>>',
-      buttons: [
-                // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
-              ]
+      // buttons: [
+      //           // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
+      //         ]
     };
   } 
 
   getclients() {
-    this.spinnerService.show();
+    // this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
 
     const reqHeader = new HttpHeaders({
@@ -115,8 +123,19 @@ export class ClientsComponent implements OnInit {
   
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
       console.log('clientsData: ', data);
-      this.clientsData = data.returnObject == null ? [] : data.returnObject;
       this.spinnerService.hide();
+      if(data.returnObject == null){
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+      }else{
+        this.clientsData = data.returnObject == null ? [] : data.returnObject;
+      }
+
     });
   }
  
@@ -162,6 +181,61 @@ export class ClientsComponent implements OnInit {
     });
   }
 
+  onAddSample(formAllData) {
+    this.submitted  = true
+    if(this.addSampleForm.invalid) {
+      return
+    }
+
+    let obj = formAllData.sample
+     
+     this.addSampledata.push(obj)
+    //  console.log("werty", this.sampledata)
+     this.submitted = false
+     this.addSampleForm = this.formBuilder.group({
+      sample: ['', Validators.required], 
+    });
+
+    this.apiUrl = environment.AUTHAPIURL + 'sample/addclientsampletemplate';
+
+    const jsondata = {
+      clientId: this.clientId,
+      sampleTemplateIDs: this.addSampledata
+    }
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    this.httpClient.post<any>(this.apiUrl, jsondata, { headers: reqHeader }).subscribe(data => {
+      console.log('singleclientData: ', data);
+      
+      if(data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        this.addSampledata = []
+        this.getClientSamples()
+      }else {
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        
+      }
+ 
+      this.spinnerService.hide();
+    });
+
+  }
+
   getSampleTemplates() { 
     this.apiUrl = environment.AUTHAPIURL + 'sample/sampleTemplates';
 
@@ -175,6 +249,60 @@ export class ClientsComponent implements OnInit {
       this.sampleTemplateData = data.returnObject == null ? [] : data.returnObject;
        
     });
+  }
+
+  getClientSamples() { 
+    this.apiUrl = environment.AUTHAPIURL + 'sample/clienttemplates/' + this.clientId;
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsSampleData: ', data);
+      this.clientSamples = data.returnObject == null ? [] : data.returnObject;
+       
+    });
+  } 
+
+  deleteClient(clientId) {
+    // this.spinnerService.show()
+    this.apiUrl = environment.AUTHAPIURL + 'client/deleteclient/' + clientId;
+
+     
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    this.httpClient.delete<any>(this.apiUrl,  { headers: reqHeader }).subscribe(data => {
+      // console.log('singleclientData: ', data);
+      
+      if(data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true
+        });
+        this.getclients();
+      }else {
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        
+      }
+ 
+      this.spinnerService.hide();
+    });
+   
   }
   
   createClient() {
@@ -204,6 +332,7 @@ export class ClientsComponent implements OnInit {
           timer: 5000,
         });
         this.getclients();
+        this.clientName = ''
       }else {
         Swal.fire({
           icon: "error",
@@ -219,30 +348,115 @@ export class ClientsComponent implements OnInit {
     });
   }  
 
-  deleteSample(test) {
+  deleteSample(sampleId) {
+    // this.spinnerService.show()
+    this.apiUrl = environment.AUTHAPIURL + 'sample/deleteClientSampleTemplate/' + sampleId;
 
+     
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    this.httpClient.delete<any>(this.apiUrl,  { headers: reqHeader }).subscribe(data => {
+      // console.log('singleclientData: ', data);
+      
+      if(data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+          timerProgressBar: true
+        });
+        this.getclients();
+      }else {
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        
+      }
+ 
+      this.spinnerService.hide();
+    });
+  }
+
+  deleteSampleOnAdd(sample){
+    this.sampledata = this.sampledata.filter(e => e !== sample)
   }
   onUpdateClient(formData) {
+    this.submitted = true;
 
+    if (this.updateClientForm.invalid) {
+      return
+    }
+     
+    const obj = {
+      id: this.clientId,
+      name: formData.name,
+      email: formData.email,
+      address: formData.address
+    }
+
+    this.postClientUpdate(obj)
+  }
+
+  postClientUpdate(json) {
+    // this.spinnerService.show()
+    this.apiUrl = environment.AUTHAPIURL + 'client/updateclient';
+
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+
+    this.httpClient.put<any>(this.apiUrl, json, { headers: reqHeader }).subscribe(data => {
+      console.log('singleclientData: ', data);
+      
+      if(data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        this.getclients();
+      }else {
+        Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        });
+        
+      }
+ 
+      this.spinnerService.hide();
+    });
   }
 
   viewSingleClient(modal, singleclient) {
-    this.updatesamplesForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      limit: ['', Validators.required], 
+    this.updateClientForm = this.formBuilder.group({
+      name: [singleclient.name, Validators.required],
+      email: [singleclient.email, Validators.required], 
+      address: [singleclient.address, Validators.required], 
     });
-    this.showModal(modal)
     this.singleClientName = singleclient.name
-    this.clientEmail = singleclient.email
-    // this.testTemplate = singleclient.testTemplates
+    this.clientId = singleclient.id
+    this.getClientSamples()
+    this.getSampleTemplates()
+    this.showModal(modal)
+     
   }
-
-  editTest(test) {
-    this.updatesamplesForm = this.formBuilder.group({
-      name: [test.name, Validators.required],
-      limit: [test.limit, Validators.required], 
-    });
-  }
+ 
     
 
   showModal(modal) {

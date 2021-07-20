@@ -32,14 +32,11 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th>Name</th>  
                     <th>Role Name</th>
                     <th>Created Date</th>
-                    <th *ngIf="managerRole">Status</th>
-                    <th *ngIf="managerRole">Action</th>
-                    <th *ngIf="managerRole">Delete</th>
+                    <th >Status</th>
+                    <th >Action</th> 
                    
                   </tr>
                 </thead>
@@ -47,42 +44,23 @@
                     
                   <tr *ngFor="let mydata of apidata ; index as i">
                     <td>{{i+1}}</td>
-                    <td>{{ mydata.name | titlecase}}</td>
-                    <td>
-                      <p *ngIf="mydata.email != '' || mydata.email == null ; else notShow "> {{ mydata.email}} </p>
-                      <ng-template #notShow>NA</ng-template>
+                    <td>{{ mydata.name | titlecase}}</td> 
+                    <td> {{mydata.role}}
                     </td>
-                    <td>{{ mydata.phone }}</td>
-                    <td>
-                      <p *ngIf="mydata.role_id == 5">Manager</p>
-                      <p *ngIf="mydata.role_id == 6">Editor</p>
-                      <p *ngIf="mydata.role_id == 7">Viewer</p>
-                    </td>
-                    <td>{{ mydata.created_at | date:'MMM d, y, h:mm:ss a' }}</td>
-                    
-                    <td *ngIf="managerRole">
-                      <p *ngIf="mydata.active == 1">
-                        <button *ngIf="mydata.role_id !=5; else other_content_active" class="btn btn-outline-success" (click)="changeStatus(mydata.id, mydata.active)" >Active</button>
-                        <ng-template #other_content_active><button class="btn btn-outline-success" disabled>Active</button></ng-template>
-                      </p>
-                     
-                      <p *ngIf="mydata.active == 0">
-                        <button *ngIf="mydata.role_id !=5; else other_content_inactive" class="btn btn-outline-danger" (click)="changeStatus(mydata.id, mydata.active)">Inactive</button>
-                        <ng-template #other_content_inactive><button class="btn btn-outline-danger" disabled>Inactive</button></ng-template>
-                      </p>
+                    <td>{{ mydata.registrationDate | date:'MMM d, y' }}</td>
+                    -
+                    <td >
+                     {{mydata.role | titlecase}}
                     
                     </td>
 
-                    <td *ngIf="managerRole">
-                      <button *ngIf="mydata.role_id !=5; else other_content_edit" [routerLink]="['/edit', mydata.id]" class="btn btn-outline-primary"  >Edit</button>
-                      <ng-template #other_content_edit><button class="btn btn-outline-danger" disabled>Edit</button></ng-template>
+                    <td >  
+                          <button *ngIf="mydata?.role == 'Admin'" class="btn btn-success pointer" (click)="userToStaff(mydata?.userId)">Update User</button>
+                          <button *ngIf="mydata?.role == 'Staff'" class="btn btn-primary pointer" (click)="userToAdmin(mydata?.userId)">Update User</button>
+                        
                     </td>
 
-
-                    <td>
-                      <button *ngIf="mydata.role_id !=5; else other_content" (click)="deleteUser(mydata.id)" class="btn btn-danger" >Delete</button>
-                      <ng-template #other_content><button class="btn btn-danger" disabled>Delete</button></ng-template>
-                    </td>
+ 
     
                   </tr>
                 </tbody>

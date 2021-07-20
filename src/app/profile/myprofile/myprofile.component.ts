@@ -48,11 +48,9 @@ export class MyprofileComponent implements OnInit {
     this.roleID = localStorage.getItem('role_id');
     //  if (this.roleID != 1) {
     //   this.router.navigate(['/logout']);
-    //  }
-
-    this.userID = localStorage.getItem('id');
-    this.corporateID = localStorage.getItem('corporate_id');
-    this.getApplication();
+    //  } 
+    this.getRole()
+    this.userID = localStorage.getItem('id'); 
     this.getUserData();
 
     this.userProfileForm = this.formBuilder.group({
@@ -72,7 +70,7 @@ export class MyprofileComponent implements OnInit {
   }
 
   getRole() {
-    this.apiUrl = environment.AUTHAPIURL + 'roles';
+    this.apiUrl = environment.AUTHAPIURL + 'management/getusertypes';
     return this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
       console.log(res.response);
       this.roles = res.response;
@@ -88,27 +86,7 @@ export class MyprofileComponent implements OnInit {
         this.myroles = arr;
       }
     });
-  }
-
-  getApplication() {
-    this.apiUrl = environment.AUTHAPIURL + 'applications/1/roles';
-    return this.httpClient.get<any>(this.apiUrl).subscribe((res) => {
-      console.log(res.response);
-      this.applications = res.response;
-      this.roles = res.response;
-
-      const arr = [];
-      for (const obj of this.applications) {
-        // console.log(obj);
-        arr.push({
-          id: obj.id,
-          application_name: obj.application_name,
-          status: obj.status,
-        });
-        this.myapplications = arr;
-      }
-    });
-  }
+  } 
 
   getUserData() {
     this.apiUrl = environment.AUTHAPIURL + 'users/' + this.userID;

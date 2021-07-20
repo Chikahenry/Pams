@@ -1,0 +1,72 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31"> 
+          <!-- SELECT2 EXAMPLE -->
+          <div class="card card-secondary">
+              <div class="card-header row custome">
+                <div class="col-md-8">
+                  <h3 class="card-title">All Samplings </h3>
+
+                </div> 
+            <!-- <div class="col-md-4">
+              <a [routerLink]="['/labtests']"  [routerLinkActive]="['active']" class="btn btn-block btn button-login">
+                Add Lab Tests</a></div> -->
+
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                  <div>
+                      
+                      <table class="table table-bordered table-condensed" *ngIf="samplingData;" datatable
+                          [dtOptions]="dtOptions" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Client Name</th> 
+                                  <th>Analyst</th>   
+                                  <th>Date & Time</th>    
+                                  <th>Number of Samples</th>  
+                                  <th>Status</th> 
+                                  <th>Details</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of samplingData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{  1 }}</td> 
+                                  <td>{{ mydata.staffName | titlecase }}</td>
+                                  <td>{{ mydata.samplingDate | date: 'MMM d, y, h:mm:ss a'}}</td>
+                                  <td>{{ mydata.samples.length | number }}</td> 
+                                  <td>{{ mydata.status === "0" ? "Submitted" : "Forwarded to Client" }}</td> 
+                                  <td>
+                                      <button class="btn btn-sm btn-outline-primary mr-3"
+                                           ><i class="nav-icon fas fa-eye"></i> View
+                                      </button>
+                                      <button class="btn btn-sm btn-outline-success " ><i class="nav-icon fas fa-report"></i> Generate Report
+                                  </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
+                      Schedule</button> -->
+              </div>
+          </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>

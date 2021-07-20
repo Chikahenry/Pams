@@ -65,10 +65,8 @@ export class ChangepasswordComponent implements OnInit {
     let emailAddress = localStorage.getItem('email');
 
     const obj = {
-      current_password: formAllData.oldPassword,
-      new_password: formAllData.newPassword,
-      confirm_password: formAllData.confirmPassword,
-      email: emailAddress
+      oldPassword: formAllData.oldPassword,
+      newPassword: formAllData.newPassword 
     };
 
     console.log("changePasswordFormData: ", obj);

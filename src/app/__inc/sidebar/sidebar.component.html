@@ -121,7 +121,7 @@
                 </li>
 
                 <li class="nav-item">
-                  <a  [routerLink]="['/labTests']"  [routerLinkActive]="['active']"  class="nav-link">
+                  <a  [routerLink]="['/labTest']"  [routerLinkActive]="['active']"  class="nav-link">
                     <i class="nav-icon fab fa-red-river"></i>
                     <p>
                       Lab Tests
@@ -153,21 +153,14 @@
                 
 
                 <li class="nav-item">
-                  <a [routerLink]="['paidInvoices']" [routerLinkActive]="['active']" class="nav-link">
+                  <a [routerLink]="['invoicing']" [routerLinkActive]="['active']" class="nav-link">
                     <i class="nav-icon fas fa-paper-plane"></i>
                     <p>
-                      Paid Invoices
+                      Invoices
                     </p>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a [routerLink]="['unpaidInvoices']" [routerLinkActive]="['active']" class="nav-link">
-                    <i class="nav-icon far fa-thumbs-up"></i>
-                    <p>
-                      Unpaid Invoices
-                    </p>
-                  </a>
-                </li>
+                 
   
               </ul>
   
@@ -255,32 +248,14 @@
                     </p>
                   </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a [routerLink]="['myprofile', userID]" [routerLinkActive]="['active']" class="nav-link">
                     <i class="nav-icon fas fa-user-cog"></i>
                     <p>
                       My Profile
                     </p>
                   </a>
-                </li>
-                <li class="nav-item"  >
-                  <a [routerLink]="['useractivities']" [routerLinkActive]="['active']" class="nav-link">
-                    <i class="nav-icon fas fa-clipboard-list"></i>
-                    <p>
-                      Users Activities
-                    </p>
-                  </a>
-                </li>
-                 
-                
-                <li class="nav-item">
-                  <a  [routerLink]="['/deletedemployees']"  [routerLinkActive]="['active']"  class="nav-link">
-                    <i class="nav-icon fas fa-trash-alt"></i>
-                    <p>
-                      Deleted Employees
-                    </p>
-                  </a>
-                </li>
+                </li>  -->
                 <li class="nav-item">
                   <a [routerLink]="['/changepassword']" [routerLinkActive]="['active']" class="nav-link">
                     <i class="nav-icon fas fa-lock"></i>
@@ -297,7 +272,7 @@
 
           <li id="accordion" class=" "> 
             <div class="nav-item" id="paymenthistory">
-              <a class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
+              <a [routerLink]="['/report']" [routerLinkActive]="['active']" class=" pl-4 collapsed nav-link pr-5" style="cursor: pointer;" data-toggle="collapse"
                 data-target="#report" aria-expanded="false" aria-controls="report">
                 <i class="nav-icon pr-2  fas fa-file-alt">&nbsp;&nbsp;</i>
                 <p>

@@ -46,9 +46,12 @@
                                   <td>{{ mydata.address  }}</td>
                                   <td>{{ mydata.samples}}</td>  
                                   <td>{{ mydata.registeredDate | date }}</td>  
-                                  <td style="width: 10%">
+                                  <td>
                                       <button class="btn btn-sm btn-outline-primary"
                                           (click)="viewSingleClient(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> View
+                                      </button>
+                                      <button class="btn btn-sm btn-outline-success"
+                                          (click)="deleteClient(mydata.id)"><i class="nav-icon fas fa-trash-alt"></i> Delete
                                       </button>
                                   </td>
                               </tr>
@@ -81,53 +84,121 @@
 
     </div> 
 
-    <div class="ml-4 d-none mb-4" *ngIf="">
-      <form [formGroup]="updatesamplesForm" (ngSubmit)="onUpdateClient(updatesamplesForm.value)">
+    <div class="ml-4 mb-4">
+      <form [formGroup]="updateClientForm" (ngSubmit)="onUpdateClient(updateClientForm.value)">
         <div class="row mt-4">
-          <div class="form-group mb-2 col-md-5">
-            <input type="text" class="form-control" placeholder="sample Name" formControlName="name"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updatesamplesForm.controls.name.errors }">
+          <div class="form-group mb-2 col-md-6">
+            <input type="text" class="form-control" placeholder="Client Name" formControlName="name"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateClientForm.controls.name.errors }">
              
-              <div *ngIf="submitted &amp;&amp; updatesamplesForm.controls.name.errors" class="text-danger validation-error">
-                <div *ngIf="updatesamplesForm.controls.name.errors.required">Name is required</div> 
+              <div *ngIf="submitted &amp;&amp; updateClientForm.controls.name.errors" class="text-danger validation-error">
+                <div *ngIf="updateClientForm.controls.name.errors.required">Client Name is required</div> 
               </div>
           </div>
-          <div class="form-group col-md-5 mb-2">
-            <input type="text" class="form-control" placeholder="sample Limit" formControlName="limit"
-              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updatesamplesForm.controls.limit.errors }">
+          <div class="form-group col-md-6 mb-2">
+            <input type="text" class="form-control" placeholder="Client Email" formControlName="email"
+              [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateClientForm.controls.email.errors }">
                
-              <div *ngIf="submitted &amp;&amp; updatesamplesForm.controls.limit.errors" class="text-danger validation-error">
-                <div *ngIf="updatesamplesForm.controls.limit.errors.required">sample Limit is required</div> 
+              <div *ngIf="submitted &amp;&amp; updateClientForm.controls.email.errors" class="text-danger validation-error">
+                <div *ngIf="updateClientForm.controls.email.errors.required">Client Email is required</div> 
+                <div *ngIf="updateClientForm.controls.email.errors.email">A valid Email is required</div> 
               </div>
              
           </div>
     
-          <button class="btn btn button-login " >
-            Add
-          </button>
-  
         </div>
+          <div class="row">
+            <div class="form-group col-md-6 mb-2">
+              <textarea type="text" class="form-control" rows="4" placeholder="Client Address" formControlName="address"
+                [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateClientForm.controls.address.errors }"></textarea>
+                 
+                <div *ngIf="submitted &amp;&amp; updateClientForm.controls.address.errors" class="text-danger validation-error">
+                  <div *ngIf="updateClientForm.controls.address.errors.required">Client Address is required</div> 
+                </div>
+               
+            </div>
+            <div class="col-md-4 mt-5 ml-4">
+              <button class="btn btn button-login mt-4" >
+              Update
+              </button>
+
+            </div>
+          </div>
+  
       </form>
 
     </div>
 
-    <div class="card-body m-4 shadow border " *ngIf="sampleTemplate">
+    <div class="ml-5 mb-5" >
+      <form [formGroup]="addSampleForm" (ngSubmit)="onAddSample(addSampleForm.value)">
+        <div class="row mt-4">
+          <div class="form-group col-md-7 mb-2">
+            <select type="" class="form-control" placeholder="" formControlName="sample"
+             [ngClass]="{ 'is-invalid': submitted &amp;&amp; addSampleForm.controls.sample.errors }">
+             <option value="">Select Sample Type</option>
+             <option *ngFor="let sample of sampleTemplateData" value="{{sample.id}}">{{sample.name}}</option> 
+             </select>
+             <div *ngIf="submitted &amp;&amp; addSampleForm.controls.sample.errors" class="text-danger validation-error">
+               <div *ngIf="addSampleForm.controls.sample.errors.required">Sample is required</div> 
+             </div>
+            </div> 
+
+            <button class="btn btn button-login " type="submit" >
+              Add
+            </button>
+        </div>
+        
+      </form>
+
+    </div>
+    <div class="card-body m-4 shadow " >
       <ul class="todo-list-li" >
 
-        <div *ngFor="let sample of sampleTemplate; index as i">
+        <div *ngFor="let sample of clientSamples; index as i">
          
           <li class="border">
-            <div class="icheck-primary d-inline ml-2 ">
-              <input type="checkbox" [value]="sample.id" checked="{{sample.done == 1}}"   name="todo1"
+            <div class="icheck-primary ml-2 ">
+              <input type="checkbox" [value]="sample.id"    name="todo1"
                 id="todoCheck{{i+1}}">
-              <label for="todoCheck{{i+1}}"></label>
+              <label for="todoCheck{{i+1}}">{{i+1}}</label>
               <span class="text ml-4">Name: {{ sample.name }}</span>
-              <span class="text ml-5">Limit: {{ sample.limit }}</span>
-              <!-- <span title="Edit"> 
-                 <a (click)="editsample(sample)"
-                  class="badge badge-primary Delete-icon float-right pointer color-white delete-box">
-                  Edit <i class="nav-icon ml-3 fas fa-edit-alt"></i></a>
-              </span>  -->
+              <span class="text ml-4">SampleType: {{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</span>
+              <span class="text ml-5">Tests: {{ sample?.testTemplates?.length }}</span>
+              <span title="Delete"> 
+                 <a (click)="deleteSample(sample.id)"
+                  class="badge badge-danger Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
+                  Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+              </span> 
+            </div> 
+
+          </li>
+        </div>
+
+      </ul> 
+    </div>
+
+
+    <!-- <div class="card-body m-4 shadow border "  >
+      <div class="">
+        <h5>Number of selected Samples: {{sampledata.length}}</h5>
+      </div>
+      <ul class="todo-list-li" >
+
+        <div *ngFor="let sample of sampledata; index as i">
+         
+          <li class="border">
+            <div class="icheck-primary d-inline ml-2 "> 
+              <label for="todoCheck{{i+1}}"></label>
+              <div class="" *ngFor="let template of sampleTemplateData">
+                <span class="text" *ngIf="sample === template.id">Name: {{ template.name }}
+                <span class="text ml-4">Tests: {{ template.testTemplates.length }}</span>
+                <span title="Delete">
+                  <a (click)="deleteSample(sample.id)"
+                    class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
+                    Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                </span> 
+                </span>
+              </div>
             </div>
 
  
@@ -136,11 +207,12 @@
         </div>
 
       </ul>
-      <!-- <a class="btn button-login mb-3" (click)="updateclients()">
+      <a class="btn button-login mb-3" (click)="createClient()">
         Submit
-        </a> -->
-    </div>
+        </a>
+    </div> -->
   </div>
+  
 </ng-template>
 
 <ng-template #addclientsModal let-modal >
@@ -154,7 +226,7 @@
       <h4>{{clientName}} </h4>
 
     </div>
-    <div class=" ml-4 mb-4" *ngIf="showClientForm">
+    <div class="m-4" *ngIf="showClientForm">
       <form [formGroup]="clientForm" (ngSubmit)="onSubmitClient(clientForm.value)">
         <div class="row mt-4">
           <div class="form-group mb-2 col-md-6">
@@ -235,7 +307,7 @@
                 <span class="text" *ngIf="sample === template.id">Name: {{ template.name }}
                 <span class="text ml-4">Tests: {{ template.testTemplates.length }}</span>
                 <span title="Delete">
-                  <a (click)="deleteSample(sample.id)"
+                  <a (click)="deleteSampleOnAdd(sample)"
                     class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
                     Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
                 </span> 
@@ -252,6 +324,8 @@
       <a class="btn button-login mb-3" (click)="createClient()">
         Submit
         </a>
+      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
+
     </div>
   </div>
 </ng-template>

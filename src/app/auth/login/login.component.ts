@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   showLoginForm: boolean = true;
   showOtpForm: boolean = false;
   requestObj: any;
-  status: any;
+  status: boolean = false;
   emailAddress: any;
   password: any;
   fieldTextType: boolean;
@@ -43,8 +43,8 @@ export class LoginComponent implements OnInit {
               private sess: SessionService, 
               private spinnerService: Ng4LoadingSpinnerService) { }
 
-  ngOnInit(): void {
-    this.sess.islogin(); 
+  ngOnInit() {
+    // this.sess.islogin(); 
     localStorage.removeItem('otp_username');
 
     this.loginForm = this.formBuilder.group({
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
   } 
 
   userLogin(jsonData: any) {
-    this.spinnerService.show();
+    // this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + 'account/signin';  
  
     this.http.post<any>(this.apiUrl, jsonData).subscribe(data => {
@@ -85,8 +85,8 @@ export class LoginComponent implements OnInit {
       console.log("loginApiResponse: ", data);
       this.status = data.status; 
 
-        // this.spinnerService.hide();
-        if (this.status == true) {
+        this.spinnerService.hide();
+        if (data.status == true) {
           localStorage.setItem('username', data.returnObject.email);
           localStorage.setItem('email', data.returnObject.email);
           localStorage.setItem('id', data.returnObject.userId);
@@ -106,7 +106,8 @@ export class LoginComponent implements OnInit {
             title: 'Oops...',
             text:  data.message,
             showConfirmButton: true,
-            timer: 5000
+            timer: 5000,
+            timerProgressBar: true
           });
 
         }

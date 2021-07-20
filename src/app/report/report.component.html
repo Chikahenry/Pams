@@ -1,0 +1,71 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content" data-select2-id="32">
+      <div class="container-fluid" data-select2-id="31"> 
+          <!-- SELECT2 EXAMPLE -->
+          <div class="card card-secondary">
+              <div class="card-header row custome">
+                <div class="col-md-8">
+                  <h3 class="card-title">All Reports </h3>
+
+                </div>  </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                  <div>
+                      
+                      <table class="table table-bordered table-condensed" *ngIf="reportData;" datatable
+                          [dtOptions]="dtOptions" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>S/N</th>
+                                  <th>Client Name</th> 
+                                  <th>Client Address</th>   
+                                  <th>Sample ref No.</th>    
+                                  <th>Batch Number</th>    
+                                  <th>Certificate number</th>  
+                                  <th>Lab Analyst</th>     
+                                  <th>actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let mydata of reportData; index as i">
+                                  <td>{{ i + 1 }}</td>
+                                  <td>{{ mydata.clientName | titlecase }}</td>
+                                  <td>{{ mydata.clientAddress | titlecase }}</td>
+                                  <td>{{ mydata.lab_Sample_Ref_Number }}</td>
+                                  <td>{{ mydata.batch_Number }}</td>
+                                  <td>{{ mydata.certificate_Number  }}</td>
+                                  <td>{{ mydata.lab_Analyst }}</td>  
+                                  <td>
+                                       
+                                      <button title="View" class="btn btn-sm btn-outline-primary mr-3 "  ><i class="nav-icon fas fa-eye"></i>
+                                      </button>
+                                        <button title="Download" class="btn btn-sm btn-outline-warning mr-3"  ><i class="nav-icon fas fa-download"></i>
+                                  </button>
+                                  <button title="Delete" class="btn btn-sm btn-outline-danger "   ><i class="nav-icon fas fa-trash-alt"></i>
+                                  </button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                  <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
+                      Schedule</button> -->
+              </div>
+          </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>

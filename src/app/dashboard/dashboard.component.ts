@@ -23,6 +23,9 @@ export class DashboardComponent implements OnInit {
   totalActive: any = 0;
   totalInctive: any = 0;
   employeesCount: any;
+  clientsData: any;
+  usersData: any;
+  sampleTemplateData: any;
 
 
   // tslint:disable-next-line: max-line-length
@@ -30,18 +33,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.sess.checkLogin();
-
-    this.spinnerService.show(); // show the spinner
-    this.getDashboardData();
-    this.getEmployees();
-    //this.getAll();
-    this.spinnerService.hide(); // hide the spinner if success
+    this.getclients()
+    this.getSampleTemplates()
+    this.getUserData()
+    // this.getDashboardData();  
 
     this.isRun = localStorage.getItem('is_reload');
     // alert(this.isRun);
-    if(this.isRun != 'true') {
-        this.refresh();
-    }
+    // if(this.isRun != 'true') {
+    //     this.refresh();
+    // }
   }
 
   logout() {
@@ -70,27 +71,55 @@ export class DashboardComponent implements OnInit {
       this.spinnerService.hide();
       });
   }
+ 
 
-  getEmployees() {
-    // this.apiUrl = environment.AUTHAPIURL + 'employees-list';
+  getclients() {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     });
-
-    let corporateId = localStorage.getItem('corporate_id');
-
-    const obj = {
-      corporate_ids: [corporateId],
-    };
-
-    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
-      console.log('employeesData: ', data);
-      this.employeesCount = data.response.data.length;
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsData: ', data);
+      this.spinnerService.hide();
+      this.clientsData = data.returnObject == null ? [] : data.returnObject;
 
     });
   }
  
+  getUserData() {
+    this.apiUrl = environment.AUTHAPIURL + 'management/getusers';
 
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    });
+
+    // this.spinnerService.show(); 
+
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log(data);
+      this.usersData = data.returnObject;
+      this.spinnerService.hide();
+      });
+  }
+
+  getSampleTemplates() { 
+    this.apiUrl = environment.AUTHAPIURL + 'sample/sampleTemplates';
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsData: ', data);
+      this.sampleTemplateData = data.returnObject == null ? [] : data.returnObject;
+       
+    });
+  }
+  
 }
