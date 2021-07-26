@@ -30,7 +30,7 @@ export class ReportComponent implements OnInit {
   }[] = []; 
   sampleData: any[] = [];
   selectedInvoice: any;
-  invoiceId: any;
+  reportId: any;
   invoicePaid: boolean;
   paid: boolean;
   clientName: any;
@@ -116,4 +116,38 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  downloadReport(reportId){
+    this.reportId = reportId
+    this.apiUrl = environment.AUTHAPIURL + 'report/downloadreport/' + this.reportId;
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+     //  console.log('clientsData: ', data);
+      this.spinnerService.hide();
+      if(data.status == true){
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          }); 
+          
+          this.getReports()
+       }else {
+        Swal.fire({
+            icon: "error",
+            title: "Oop...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 7000,
+          }); 
+       }
+ 
+    });
+  }
 }

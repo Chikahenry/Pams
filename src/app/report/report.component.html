@@ -37,17 +37,17 @@
                           <tbody>
                               <tr *ngFor="let mydata of reportData; index as i">
                                   <td>{{ i + 1 }}</td>
-                                  <td>{{ mydata.clientName | titlecase }}</td>
-                                  <td>{{ mydata.clientAddress | titlecase }}</td>
-                                  <td>{{ mydata.lab_Sample_Ref_Number }}</td>
-                                  <td>{{ mydata.batch_Number }}</td>
-                                  <td>{{ mydata.certificate_Number  }}</td>
-                                  <td>{{ mydata.lab_Analyst }}</td>  
+                                  <td>{{ mydata?.clientName | titlecase }}</td>
+                                  <td>{{ mydata?.clientAddress | titlecase }}</td>
+                                  <td>{{ mydata?.lab_Sample_Ref_Number }}</td>
+                                  <td>{{ mydata?.batch_Number }}</td>
+                                  <td>{{ mydata?.certificate_Number  }}</td>
+                                  <td>{{ mydata?.lab_Analyst }}</td>  
                                   <td>
                                        
                                       <button title="View" class="btn btn-sm btn-outline-primary mr-3 "  ><i class="nav-icon fas fa-eye"></i>
                                       </button>
-                                        <button title="Download" class="btn btn-sm btn-outline-warning mr-3"  ><i class="nav-icon fas fa-download"></i>
+                                        <button title="Download" (click)='downloadReport(reportId)' class="btn btn-sm btn-outline-warning mr-3"  ><i class="nav-icon fas fa-download"></i>
                                   </button>
                                   <button title="Delete" class="btn btn-sm btn-outline-danger "   ><i class="nav-icon fas fa-trash-alt"></i>
                                   </button>

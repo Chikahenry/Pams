@@ -96,7 +96,7 @@
                
             </div>
             <div class="form-group mb-2 col-md-5">
-              <input type="text" class="form-control" placeholder="Sample amount" formControlName="amount"
+              <input type="number" class="form-control" placeholder="Sample amount" formControlName="amount"
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; invoiceForm.controls.amount.errors }">
                
                 <div *ngIf="submitted &amp;&amp; invoiceForm.controls.amount.errors" class="text-danger validation-error">
@@ -116,26 +116,18 @@
  
     <div  *ngIf="invoiceItems.length > 0">
       <div class="card-body m-4 shadow border ">
-        <h5>List of Samples and Amount</h5>
-        <ul class="todo-list-li" >
+        <h5>List of Samples and Amount</h5> 
   
-          <div *ngFor="let item of invoiceItems; index as i">
-           
-            <li class="border">
+          <div> 
               <div class="icheck-primary d-inline ml-2 ">
-                 
-                <label for="todoCheck{{i+1}}"></label>
-                <span class="text ml-4"> {{ item.name }}</span>
-                <span class="text ml-5"> {{ item.amount | currency: 'NGN'}}</span>
-               
+                  
+                <dl  *ngFor="let item of invoiceItems; index as i">
+                  <dt>{{ item.name }}</dt>
+                  <dd>{{ item.amount | currency: 'NGN'}}</dd> 
+                </dl>
               </div>
-  
    
-  
-            </li>
-          </div>
-  
-        </ul>
+          </div> 
       </div>
       <form [formGroup]="dueDateForm" (ngSubmit)="forwardInvoice(dueDateForm.value)">
 
@@ -186,7 +178,7 @@
                       <tr>
                           <th>S/N</th>
                           <th>Name</th>
-                          <th>value</th>
+                          <!-- <th>value</th> -->
                           <th>Address</th>
                           <th>Sample Count</th>    
                           <th>Date registered</th>    
@@ -197,7 +189,7 @@
                       <tr *ngFor="let mydata of clientsData; index as i">
                           <td>{{ i + 1 }}</td>
                           <td>{{ mydata.name | titlecase }}</td>
-                          <td>{{ mydata.value  }}</td>
+                          <!-- <td>{{ mydata.value  }}</td> -->
                           <td>{{ mydata.address  }}</td>
                           <td>{{ mydata.samples}}</td>  
                           <td>{{ mydata.registeredDate | date }}</td>  
@@ -234,30 +226,33 @@
     </div>
   </div>
 
-  <div class="card-body m-4 shadow " >
-    <ul class="todo-list-li" >
-
-      <div *ngFor="let sample of clientSamples; index as i">
-       
-        <li class="border">
-          <div class="icheck-primary ml-2 ">
-            <input type="checkbox" [value]="sample.id"    name="todo1"
-              id="todoCheck{{i+1}}">
-            <label for="todoCheck{{i+1}}">{{i+1}}</label>
-            <span class="text ml-4">Name: {{ sample.name }}</span>
-            <span class="text ml-4">SampleType: {{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</span>
-            <span class="text ml-5">Tests: {{ sample?.testTemplates?.length }}</span>
-            <span title="Result"> 
-               <a (click)="viewTest(testModal, sample)"
-                class="badge badge-primary Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
-                Input Test Result <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
-            </span> 
-          </div> 
-
-        </li>
+  <div class="card-body m-4 shadow " > 
+      <div >
+        <table class="table table-bordered table-condensed" *ngIf="clientSamples;" width="100%">
+          <thead>
+              <tr>
+                  <th>S/N</th>
+                  <th>Sample Name</th> 
+                  <th>Sample Type</th>   
+                  <th>Test Number</th>   
+                  <td>Details</td>  
+              </tr>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let sample of clientSamples; index as i">
+                  <td >{{ i + 1 }}</td>
+                  <td  > {{ sample.name }}</td> 
+                  <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</td> 
+                  <td  > {{ sample?.testTemplates?.length }}</td> 
+                   <td><a (click)="viewTest(testModal, sample)"
+                    class="badge badge-primary Delete-icon   pointer color-white delete-box" style="cursor:pointer;">
+                    Input Test Result <i class="nav-icon ml-3 fas fa-edit-alt"></i></a></td>
+              </tr>
+          </tbody>
+      </table>   
+ 
       </div>
-
-    </ul> 
+ 
   </div>
 
   <div class="m-4 " >
@@ -266,19 +261,19 @@
       <div *ngFor="let sample of sampleData; index as i">
        
         <li class="border">
-          <div class="icheck-primary ml-2 row">
-             
-            <label for="todoCheck{{i+1}}">{{i+1}}</label>
-            <div class="text ml-4">
-              <h5>{{sample.name}}</h5>
-            </div>
-            <div class="text ml-5 " *ngFor="let test of sample.tests">
+          <div class="icheck-primary ml-2 row"> 
+            <div class="text ml-4 mr-4">
+              <h5>{{sample.name+': '}}</h5>
+            </div> 
               <div class="pdg">
-                <span class="text ml-4"> {{ test.name }}</span> 
-                  <span class="text ml-5 pl-5">{{ test.value }}</span>
-
-              </div>
-            </div>
+                <!-- <span class="text ml-4">Test: {{ test.name }}</span> 
+                  <span class="text ml-5 pl-5">Result: {{ test.value }}</span>
+                <br> -->
+                <dl  *ngFor="let test of sample.tests">
+                  <dt class="pr-5">{{ test.name }}</dt>
+                  <dd>{{ test.value}}</dd> 
+                </dl>
+              </div> 
              
           </div> 
 
@@ -295,7 +290,7 @@
   <div class=""> 
     <div class="card-header row">
       <h4 class="col-md-9">{{sampleName}} </h4>
-      <div *ngIf="items.length > 0"><button class="btn float-right button-login" (click)="submitSample()" >Submit </button></div>
+      <a    id="dismissBtn" (click)="modal.close('Save click')">X</a>
     </div> 
     <div class="card-body">
       <form class="" [formGroup]="testsForm" (ngSubmit)="onSubmitTest(testsForm.value)">
@@ -330,12 +325,31 @@
 
       </form>
       <div class=" mt-5" >
-        <ul class="todo-list-li" >
-    
-          <div *ngFor="let item of items; index as i">
-           
-            <li class="border">
-              <div class="icheck-primary ml-2 ">
+        
+          <div  >
+            <table class="table table-bordered table-condensed" *ngIf="items;" width="100%">
+              <thead>
+                  <tr>
+                      <th>S/N</th>
+                      <th>Test Name</th> 
+                      <th>Test limit</th>   
+                      <td>Delete</td>  
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr  *ngFor="let item of items; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td  >{{ item.name }}</td> 
+                      <td>{{ item.value }}</td> 
+                       <td>
+                        <a (click)="removeTest( item)"
+                        class="badge badge-danger Delete-icon  pointer color-white delete-box" style="cursor:pointer;">
+                        Delete Test Result <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                       </td>
+                  </tr>
+              </tbody>
+          </table>  
+              <!-- <div class="icheck-primary ml-2 ">
                 <span>{{i+1}}</span>
                 <span class="text ml-4"> {{ item.name }}</span> 
                 <span class="text ml-5">{{ item.value }}</span>
@@ -344,17 +358,14 @@
                     class="badge badge-danger Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
                     Delete Test Result <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
                 </span> 
-              </div> 
-    
-            </li>
-          </div>
-    
-        </ul> 
+              </div>  -->
+     
+          </div> 
       </div>
 
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Ok</button>
-  </div>
+      <div *ngIf="items.length > 0"><button class="btn float-right button-login" (click)="submitSample()" >Submit </button></div>
+    </div>
   </div>
 </ng-template>

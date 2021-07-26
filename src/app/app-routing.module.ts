@@ -28,6 +28,8 @@ import { FieldsamplingComponent } from './sampling/fieldsampling/fieldsampling.c
 import { LabtestComponent } from './sampling/labtest/labtest.component';
 import { InvoicingComponent } from './invoicing/invoicing.component';
 import { ReportComponent } from './report/report.component';
+import { EquipmentinventoryComponent } from './inventory/equipmentinventory/equipmentinventory.component';
+import { StockinventoryComponent } from './inventory/stockinventory/stockinventory.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -57,6 +59,8 @@ const routes: Routes = [
   {path: 'allSampling', component: ForwardedSamplingComponent},
   {path: 'client', component: ClientsComponent},
   {path: 'invoicing', component: InvoicingComponent},
+  {path: 'stockinventory', component: StockinventoryComponent},
+  {path: 'equipmentinventory', component: EquipmentinventoryComponent},
    
   {path: 'displayuser', component: DisplayuserComponent}, 
   {path: 'fieldSampling', component: FieldsamplingComponent}, 

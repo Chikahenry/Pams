@@ -27,7 +27,29 @@ nav.main-header.navbar.navbar-expand.navbar-white.navbar-light {
 .card-header.custome {
     background: #00834e !important ;
 }
-
+dl {
+    width: 100%;
+    overflow: hidden;
+    /* background: #ff0; */
+    padding: 0;
+    margin: 0
+  }
+  dt {
+    float: left;
+    width: 50%;
+    /* adjust the width; make sure the total of both is 100% */
+    /* background: #cc0; */
+    padding: 0;
+    margin: 0
+  }
+  dd {
+    float: left;
+    width: 50%;
+    /* adjust the width; make sure the total of both is 100% */
+    /* background: #dd0; */
+    padding: 0;
+    margin: 0
+  }
 .img-dashboard-logo{
 
 }
@@ -333,13 +355,13 @@ page-item.active .page-link {
 }
 
 .btn-outline-primary {
-    color: #00834e !important;
-    border-color: #00834e !important;
+    color: #003983 !important;
+    border-color: #003983 !important;
 }
 
 .btn-outline-primary:hover {
-    color: #fff !important;
-    background:  #00834e !important;
+    color: #ffffff !important;
+    background:  #003983 !important;
 }
 
 .page-link {

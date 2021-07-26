@@ -94,7 +94,7 @@ getSamplings() {
   console.log('samplingData: ', data);
   this.spinnerService.hide();
   // this.samplingData = data.returnObject == null ? [] : data.returnObject;
-  let types = [0]
+  let types = 'Lab'
   this.samplingData = data.returnObject.filter( i => types.includes( i.sampleType))
   });
 }

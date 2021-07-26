@@ -55,6 +55,8 @@ import { ClientsComponent } from './client/clients/clients.component';
 // import { FileUploadModule } from 'ng2-file-upload';
 import { InvoicingComponent } from './invoicing/invoicing.component';
 import { ReportComponent } from './report/report.component';
+import { StockinventoryComponent } from './inventory/stockinventory/stockinventory.component';
+import { EquipmentinventoryComponent } from './inventory/equipmentinventory/equipmentinventory.component';
 
 
 @NgModule({
@@ -85,6 +87,8 @@ import { ReportComponent } from './report/report.component';
     VerifyotpComponent,
     ResetpasswordComponent, 
     ReportComponent, 
+    EquipmentinventoryComponent, 
+    StockinventoryComponent, 
       PaymenthistoryComponent,
       ContactusComponent,
       HomeComponent,

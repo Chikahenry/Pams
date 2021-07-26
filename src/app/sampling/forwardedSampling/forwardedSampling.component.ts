@@ -120,18 +120,18 @@ export class ForwardedSamplingComponent implements OnInit {
             searchable: false
         }
     ],
-      dom: '<\'row\'<\'col-sm-4\'l><\'col-sm-4 text-center\'B><\'col-sm-4\'f>>' + '<\'row\'<\'col-sm-12\'tr>>' + '<\'row\'<\'col-sm-5\'i><\'col-sm-7\'p>>',
-      buttons: [
-                // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
-                // tslint:disable-next-line: max-line-length
-                { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
-                // tslint:disable-next-line: max-line-length
-                { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
-              ]
+      // dom: '<\'row\'<\'col-sm-4\'l><\'col-sm-4 text-center\'B><\'col-sm-4\'f>>' + '<\'row\'<\'col-sm-12\'tr>>' + '<\'row\'<\'col-sm-5\'i><\'col-sm-7\'p>>',
+      // buttons: [
+      //           // { extend: 'copy',  className: 'btn btn-outline-dark', text: '<i class="far fa-copy"> Copy</i>' },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'csv',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-csv"> CSV</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'excel', className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-excel"> Excel</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} },
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'pdf',   className: 'btn btn-outline-dark export-btn', text: '<i class="fas fa-file-pdf"> PDF</i>' , orientation: 'landscape', pageSize: 'LEGAL', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}},
+      //           // tslint:disable-next-line: max-line-length
+      //           { extend: 'print', className: 'btn btn-outline-dark export-btn', text: '<i class="far fas fa-print"> Print</i>', exportOptions: {columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] } }
+      //         ]
     };
   } 
 
@@ -233,6 +233,7 @@ export class ForwardedSamplingComponent implements OnInit {
       this.sampleData.push(obj)
    }else {
      this.sampleData.push(obj)
+     this.items = []
      console.log("samplejnl  ",this.sampleData)
      Swal.fire({
         icon: "success",
@@ -376,6 +377,7 @@ export class ForwardedSamplingComponent implements OnInit {
   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
     console.log('clientsSampleData: ', data);
     this.clientSamples = data.returnObject == null ? [] : data.returnObject;
+    this.clientSamples =this.clientSamples.filter(e => e.sampleType == 2)
      
   });
 } 

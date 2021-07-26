@@ -47,11 +47,11 @@
                                   <td>{{ mydata.samples}}</td>  
                                   <td>{{ mydata.registeredDate | date }}</td>  
                                   <td>
-                                      <button class="btn btn-sm btn-outline-primary"
-                                          (click)="viewSingleClient(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> View
+                                      <button title="View" class="btn btn-sm mr-3 btn-outline-primary"
+                                          (click)="viewSingleClient(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> 
                                       </button>
-                                      <button class="btn btn-sm btn-outline-success"
-                                          (click)="deleteClient(mydata.id)"><i class="nav-icon fas fa-trash-alt"></i> Delete
+                                      <button title="Delete" class="btn btn-sm btn-outline-danger"
+                                          (click)="deleteClient(mydata.id)"><i class="nav-icon fas fa-trash-alt"></i>
                                       </button>
                                   </td>
                               </tr>
@@ -151,30 +151,35 @@
       </form>
 
     </div>
-    <div class="card-body m-4 shadow " >
-      <ul class="todo-list-li" >
+    <div class="card-body m-4 shadow " > 
 
-        <div *ngFor="let sample of clientSamples; index as i">
-         
-          <li class="border">
-            <div class="icheck-primary ml-2 ">
-              <input type="checkbox" [value]="sample.id"    name="todo1"
-                id="todoCheck{{i+1}}">
-              <label for="todoCheck{{i+1}}">{{i+1}}</label>
-              <span class="text ml-4">Name: {{ sample.name }}</span>
-              <span class="text ml-4">SampleType: {{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</span>
-              <span class="text ml-5">Tests: {{ sample?.testTemplates?.length }}</span>
-              <span title="Delete"> 
-                 <a (click)="deleteSample(sample.id)"
-                  class="badge badge-danger Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
-                  Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
-              </span> 
-            </div> 
-
-          </li>
-        </div>
-
-      </ul> 
+        <div>
+          <table class="table table-bordered table-condensed" *ngIf="clientSamples;" width="100%">
+              <thead>
+                  <tr>
+                      <th>S/N</th>
+                      <th>Name</th>
+                      <th>Sample Type</th>
+                      <th>Test number</th>    
+                      <th  >Delete</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let sample of clientSamples; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ sample.name }}</td>
+                      <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}td>
+                      <td>{{ sample?.testTemplates?.length }}</td> 
+                      <td>
+                        <a (click)="deleteSample(sample.id)"
+                        class="badge badge-danger Delete-icon float-right pointer color-white delete-box" style="cursor:pointer;">
+                        Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                      </td>
+                  </tr>
+              </tbody>
+          </table> 
+ 
+        </div> 
     </div>
 
 
@@ -293,38 +298,37 @@
     <div class="card-body m-4 shadow border " *ngIf="sampledata.length > 0">
       <div class="">
         <h5>Number of selected Samples: {{sampledata.length}}</h5>
-      </div>
-      <ul class="todo-list-li" >
+      </div> 
 
-        <div *ngFor="let sample of sampledata; index as i">
-         
-          <li class="border">
-            <div class="icheck-primary d-inline ml-2 ">
-              <!-- <input type="checkbox" [value]="sample.id" checked="{{sample.done == 1}}"  name="todo1"
-                id="todoCheck{{i+1}}"> -->
-              <label for="todoCheck{{i+1}}"></label>
-              <div class="" *ngFor="let template of sampleTemplateData">
-                <span class="text" *ngIf="sample === template.id">Name: {{ template.name }}
-                <span class="text ml-4">Tests: {{ template.testTemplates.length }}</span>
-                <span title="Delete">
-                  <a (click)="deleteSampleOnAdd(sample)"
-                    class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
-                    Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
-                </span> 
-                </span>
-              </div>
-            </div>
-
+        <div *ngFor="let sample of sampledata; index as i"> 
+          <table class="table table-bordered table-condensed" *ngIf="sampleTemplateData;" width="100%">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Name</th> 
+                    <th>Test number</th>    
+                    <th  >Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let template of sampleTemplateData; index as i">
+                    <td>{{ i + 1 }}</td>
+                    <td *ngIf="sample === template.id">{{ template.name }}</td> 
+                    <td>{{ template.testTemplates.length }}</td> 
+                    <td>
+                      <a (click)="deleteSampleOnAdd(sample)"
+                      class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
+                      Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table> 
  
-
-          </li>
-        </div>
-
-      </ul>
+        </div> 
       <a class="btn button-login mb-3" (click)="createClient()">
         Submit
         </a>
-      <button type="button" class="btn button-login" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
+      <button type="button" class="btn button-login float-right mb-3" id="dismissBtn" (click)="modal.close('Save click')">Cancel</button>
 
     </div>
   </div>

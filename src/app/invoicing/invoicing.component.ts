@@ -193,13 +193,13 @@ getClientSamplings(clientId){
      'Content-Type': 'application/json',
      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
    });
+   this.clientId = clientId
  
    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
      console.log('clientsamplings: ', data);
      this.spinnerService.hide();
      if(data.status == true){
         this.clientSamplings = data.returnObject
-        this.clientId = data.returnObject[0].id
         this.clientName = data.returnObject[0].clientName
         this.samplingId = data.returnObject[0].id
       }else {
@@ -435,7 +435,7 @@ submitReportForm(formData){
     comment: formData.comment,
     microBiologicalAnalyses: this.microbiologicalData,
     physicoChemicalAnalyses: this.physicoChemicalData, 
-    lad_Env_Con: {
+    lab_Env_Con: {
       humidity: formData.humidity,
       temperature: formData.temperature
     },
