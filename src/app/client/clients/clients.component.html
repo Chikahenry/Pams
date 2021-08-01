@@ -311,16 +311,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let template of sampleTemplateData; index as i">
+              <tr  *ngFor="let template of sampleTemplateData; index as i">
+                  <ng-container *ngIf="sample === template.id" >
                     <td>{{ i + 1 }}</td>
-                    <td *ngIf="sample === template.id">{{ template.name }}</td> 
+                    <td >{{ template.name }}</td> 
                     <td>{{ template.testTemplates.length }}</td> 
                     <td>
                       <a (click)="deleteSampleOnAdd(sample)"
                       class="badge badge-danger Delete-icon float-right pointer color-white delete-box">
                       Delete <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
                     </td>
+                  </ng-container>
                 </tr>
+
             </tbody>
         </table> 
  

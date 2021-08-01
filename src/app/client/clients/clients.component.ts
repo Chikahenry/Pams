@@ -252,6 +252,7 @@ export class ClientsComponent implements OnInit {
   }
 
   getClientSamples() { 
+    this.clientSamples = [];
     this.apiUrl = environment.AUTHAPIURL + 'sample/clienttemplates/' + this.clientId;
 
     const reqHeader = new HttpHeaders({
@@ -266,44 +267,57 @@ export class ClientsComponent implements OnInit {
     });
   } 
 
-  deleteClient(clientId) {
-    // this.spinnerService.show()
-    this.apiUrl = environment.AUTHAPIURL + 'client/deleteclient/' + clientId;
-
-     
-    const reqHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    });
-
-    this.httpClient.delete<any>(this.apiUrl,  { headers: reqHeader }).subscribe(data => {
-      // console.log('singleclientData: ', data);
+  deleteClient(clientId) { 
+      const reqHeader = new HttpHeaders({
+        "Content-Type": "application/json",
+       Authorization: "Bearer " + localStorage.getItem("access_token"),
+      });
       
-      if(data.status == true) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-          timerProgressBar: true
-        });
-        this.getclients();
-      }else {
-        Swal.fire({
-          icon: "error",
-          title: "Oop...",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-        });
-        
-      }
+      this.apiUrl = environment.AUTHAPIURL + 'client/deleteclient/' + clientId; 
  
-      this.spinnerService.hide();
-    });
-   
-  }
+     Swal.fire({
+       title: "Are you sure?",
+       text: "You won't be able to revert this!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, delete it!",
+     }).then((result) => {
+       if (result.value) {
+         this.spinnerService.show();
+         this.httpClient
+           .delete<any>(this.apiUrl,  { headers: reqHeader })
+           .subscribe((data) => {
+             if (data.status == true) {
+               Swal.fire({
+                 icon: "success",
+                 title: "Success",
+                 text: "Client has been successfully deleted!",
+                 showConfirmButton: true,
+                 timer: 5000,
+               });
+               this.getclients();
+ 
+               // this.reload();
+               this.spinnerService.hide();
+               this.modalService.dismissAll();
+             } else {
+               this.spinnerService.hide();
+ 
+               Swal.fire({
+                 icon: "error",
+                 title: "",
+                 text: data.message,
+                 // text:  'An error ocurred while trying to delete Todo!',
+                 showConfirmButton: true,
+                 timer: 5000,
+               });
+             }
+           });
+       }
+     });
+   }
   
   createClient() {
     // this.spinnerService.show();
