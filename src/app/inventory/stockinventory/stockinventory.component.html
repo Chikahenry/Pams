@@ -12,12 +12,12 @@
           <div class="card card-secondary">
               <div class="card-header row custome">
                 <div class="col-md-8">
-                  <h3 class="card-title">Equipment Inventory Module </h3>
+                  <h3 class="card-title">Stock Inventory Module </h3>
 
                 </div> 
             <div class="col-md-4">
               <button class="btn btn-block btn button-login" (click)="viewAddInventory(addinventoryModal)">
-                New Equipment</button></div>
+                New Stock</button></div>
 
               </div>
               <!-- /.card-header -->
@@ -30,19 +30,20 @@
                           <thead>
                               <tr>
                                   <th>S/N</th>
-                                  <th>Equipment Name</th>
-                                  <th>itemNumber</th>
-                                  <th>ID Tag</th>
+                                  <th>Stock Name</th>
+                                  <th>Item Number</th>
+                                  <th>Last Order</th>
                                   <th>Condition</th>    
                                   <th>Location</th>    
-                                  <th>Model No</th>    
-                                  <th>Serial No</th>    
-                                  <th>Purchase Date</th>    
-                                  <th>stockQty</th>    
-                                  <th>Unit stockQty</th>    
-                                  <th>reorderLevel</th>    
+                                  <th>Weight</th>    
+                                  <th>Total Value</th>    
+                                  <th>Expiry Date</th>    
+                                  <th>StockQty</th>    
+                                  <th>Unit Cost</th>    
+                                  <th>Reorder Level</th>    
                                   <th>Quantity</th>     
-                                  <th>Warranty</th>    
+                                  <th>Quantity Left </th>    
+                                  <th>Quantity Used </th>    
                                   <th>Discontinued</th>    
                                   <th  >Details</th>
                               </tr>
@@ -94,7 +95,7 @@
 <ng-template #addinventoryModal let-modal >
   <div   class="validate-form mt-4 mb-5">
     <div class="card-header">
-      <h4 class=" bold-black"> Add Equipment</h4>
+      <h4 class=" bold-black"> Add Stock</h4>
 
     </div> 
 
@@ -102,16 +103,16 @@
       <form [formGroup]="inventoryForm" (ngSubmit)="onSubmitInventory(inventoryForm.value)">
         <div class="row mt-4">
           <div class="form-group mb-2 col-md-4">
-            <label>Equipment Name</label>
+            <label>Stock Name</label>
             <input type="text" class="form-control" placeholder="Stock Name" formControlName="itemName"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.itemName.errors }">
              
               <div *ngIf="submitted &amp;&amp; inventoryForm.controls.itemName.errors" class="text-danger validation-error">
-                <div *ngIf="inventoryForm.controls.itemName.errors.required">Equipment Name is required</div> 
+                <div *ngIf="inventoryForm.controls.itemName.errors.required">Stock Name is required</div> 
               </div>
           </div>  
-          <div class="form-group mb-2 col-md-8">
-            <label>itemNumber</label>
+          <div class="form-group mb-2 col-md-4">
+            <label>Item Number</label>
             <input type="text" class="form-control" placeholder="Stock Number" formControlName="itemNumber"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.itemNumber.errors }">
              
@@ -121,17 +122,17 @@
           </div> 
            
             <div class="form-group mb-2 mt-4 col-md-4">
-            <label>ID Tag</label>
-            <input type="text" class="form-control" placeholder="ID Tag" formControlName="dateOfLastOrder"  
+            <label>Last Order date</label>
+            <input type="text" class="form-control" placeholder="Last Order date" formControlName="dateOfLastOrder"  
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.dateOfLastOrder.errors }"> 
                
                 <div *ngIf="submitted &amp;&amp; inventoryForm.controls.dateOfLastOrder.errors" class="text-danger validation-error">
-                  <div *ngIf="inventoryForm.controls.dateOfLastOrder.errors.required">ID Tag is required</div> 
+                  <div *ngIf="inventoryForm.controls.dateOfLastOrder.errors.required">Last Order date is required</div> 
                 </div>
             </div>
             <div class="form-group mb-2 mt-4 col-md-4">
             <label>Location</label>
-            <input type="text" class="form-control" placeholder="Location" formControlName="location"
+            <input type="date" class="form-control" placeholder="Location" formControlName="location"
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.location.errors }">
                
                 <div *ngIf="submitted &amp;&amp; inventoryForm.controls.location.errors" class="text-danger validation-error">
@@ -139,50 +140,59 @@
                 </div>
             </div>  
             <div class="form-group mb-2 mt-4 col-md-4">
-            <label>reorderLevel</label>
-            <input type="text" class="form-control" placeholder="reorderLevel" formControlName="reorderLevel"
+            <label>Reorder Level</label>
+            <input type="text" class="form-control" placeholder="Reorder Level" formControlName="reorderLevel"
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.reorderLevel.errors }">
                
                 <div *ngIf="submitted &amp;&amp; inventoryForm.controls.reorderLevel.errors" class="text-danger validation-error">
-                  <div *ngIf="inventoryForm.controls.reorderLevel.errors.required">reorderLevel is required</div> 
+                  <div *ngIf="inventoryForm.controls.reorderLevel.errors.required">Reorder Level is required</div> 
                 </div>
             </div> 
              
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Purchase Date</label>
-            <input type="date" class="form-control" placeholder="Purchase Date" formControlName="expiryDate"  
+            <label>Expiry Date</label>
+            <input type="date" class="form-control" placeholder="Expiry Date" formControlName="expiryDate"  
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.expiryDate.errors }"> 
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.expiryDate.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.expiryDate.errors.required">Purchase Date is required</div> 
+                    <div *ngIf="inventoryForm.controls.expiryDate.errors.required">Expiry Date is required</div> 
                   </div>
               </div>
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Warranty Expiration</label>
-            <input type="date" class="form-control" placeholder="Warranty Expiration" formControlName="quantityUsed"
+            <label>Quantity Used</label>
+            <input type="date" class="form-control" placeholder="Quantity Used" formControlName="quantityUsed"
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.quantityUsed.errors }">
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.quantityUsed.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.quantityUsed.errors.required">Warranty Expiration is required</div> 
+                    <div *ngIf="inventoryForm.controls.quantityUsed.errors.required">Quantity Used is required</div> 
                   </div>
               </div>  
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>stockQty</label>
-            <input type="number" class="form-control" placeholder="stockQty" formControlName="stockQty"
+                <label>Quantity Left</label>
+                <input type="text" class="form-control" placeholder="Quantity Left" formControlName="quantityLeft"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.quantityLeft.errors }">
+                     
+                      <div *ngIf="submitted &amp;&amp; inventoryForm.controls.quantityLeft.errors" class="text-danger validation-error">
+                        <div *ngIf="inventoryForm.controls.quantityLeft.errors.required">Quantity Left is required</div> 
+                      </div>
+                  </div> 
+              <div class="form-group mb-2 mt-4 col-md-4">
+            <label>Stock Qty</label>
+            <input type="text" class="form-control" placeholder="stockQty" formControlName="stockQty"
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.stockQty.errors }">
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.stockQty.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.stockQty.errors.required">stockQty is required</div> 
+                    <div *ngIf="inventoryForm.controls.stockQty.errors.required">Stock Qty is required</div> 
                   </div>
               </div> 
                
                 <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Unit stockQty</label>
-            <input type="number" class="form-control" placeholder="Unit stockQty" formControlName="unitCost"  
+            <label>Unit Cost</label>
+            <input type="number" class="form-control" placeholder="Unit Cost" formControlName="unitCost"  
                     [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.unitCost.errors }"> 
                    
                     <div *ngIf="submitted &amp;&amp; inventoryForm.controls.unitCost.errors" class="text-danger validation-error">
-                      <div *ngIf="inventoryForm.controls.unitCost.errors.required">Unit stockQty is required</div> 
+                      <div *ngIf="inventoryForm.controls.unitCost.errors.required">Unit Cost is required</div> 
                     </div>
                 </div>
                 <div class="form-group mb-2 mt-4 col-md-8">
@@ -205,32 +215,23 @@
                 </div> 
                  
                   <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Model Number</label>
-            <input type="text" class="form-control" placeholder="Model Number" formControlName="weight"  
+            <label>Weight</label>
+            <input type="text" class="form-control" placeholder="Weight" formControlName="weight"  
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.weight.errors }"> 
                      
                       <div *ngIf="submitted &amp;&amp; inventoryForm.controls.weight.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.weight.errors.required">Model Number is required</div> 
+                        <div *ngIf="inventoryForm.controls.weight.errors.required">Weight is required</div> 
                       </div>
                   </div>
                   <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Serial Number</label>
-            <input type="text" class="form-control" placeholder="Serial Number" formControlName="totalValue"
+            <label>Total Value</label>
+            <input type="number" class="form-control" placeholder="Total Value" formControlName="totalValue"
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.totalValue.errors }">
                      
                       <div *ngIf="submitted &amp;&amp; inventoryForm.controls.totalValue.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.totalValue.errors.required">Serial Number is required</div> 
+                        <div *ngIf="inventoryForm.controls.totalValue.errors.required">Total Value is required</div> 
                       </div>
                   </div>  
-                  <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Photo Link</label>
-            <input type="text" class="form-control" placeholder="Photo Link" formControlName="photoLink"
-                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.photoLink.errors }">
-                     
-                      <div *ngIf="submitted &amp;&amp; inventoryForm.controls.photoLink.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.photoLink.errors.required">Photo Link is required</div> 
-                      </div>
-                  </div> 
                    
                     <div class="form-group mb-2 mt-4 col-md-4">
             <label>Discontinued</label>
@@ -263,7 +264,7 @@
 <ng-template #editinventoryModal let-modal >
   <div   class="validate-form mt-4 mb-5">
     <div class="card-header">
-      <h4 class=" bold-black"> Edit Equipment</h4>
+      <h4 class=" bold-black"> Edit Stock</h4>
 
     </div> 
 
@@ -271,31 +272,31 @@
       <form [formGroup]="inventoryForm" (ngSubmit)="onUpdateInventory(inventoryForm.value)">
         <div class="row mt-4">
           <div class="form-group mb-2 col-md-4">
-            <label>Equipment Name</label>
-            <input type="text" class="form-control" placeholder="Equipment Name" formControlName="itemName"
+            <label>Stock Name</label>
+            <input type="text" class="form-control" placeholder="Stock Name" formControlName="itemName"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.itemName.errors }">
              
               <div *ngIf="submitted &amp;&amp; inventoryForm.controls.itemName.errors" class="text-danger validation-error">
-                <div *ngIf="inventoryForm.controls.itemName.errors.required">Equipment Name is required</div> 
+                <div *ngIf="inventoryForm.controls.itemName.errors.required">Stock Name is required</div> 
               </div>
           </div>  
-          <div class="form-group mb-2 col-md-8">
-            <label>itemNumber</label>
-            <input type="text" class="form-control" placeholder="itemNumber" formControlName="itemNumber"
+          <div class="form-group mb-2 col-md-4">
+            <label>Item Number</label>
+            <input type="text" class="form-control" placeholder="Stock Number" formControlName="itemNumber"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.itemNumber.errors }">
              
               <div *ngIf="submitted &amp;&amp; inventoryForm.controls.itemNumber.errors" class="text-danger validation-error">
-                <div *ngIf="inventoryForm.controls.itemNumber.errors.required">itemNumber is required</div> 
+                <div *ngIf="inventoryForm.controls.itemNumber.errors.required">Item Number is required</div> 
               </div>
           </div> 
            
             <div class="form-group mb-2 mt-4 col-md-4">
-            <label>ID Tag</label>
-            <input type="text" class="form-control" placeholder="ID Tag" formControlName="dateOfLastOrder"  
+            <label>Last Order date</label>
+            <input type="text" class="form-control" placeholder="Last Order date" formControlName="dateOfLastOrder"  
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.dateOfLastOrder.errors }"> 
                
                 <div *ngIf="submitted &amp;&amp; inventoryForm.controls.dateOfLastOrder.errors" class="text-danger validation-error">
-                  <div *ngIf="inventoryForm.controls.dateOfLastOrder.errors.required">ID Tag is required</div> 
+                  <div *ngIf="inventoryForm.controls.dateOfLastOrder.errors.required">Last Order date is required</div> 
                 </div>
             </div>
             <div class="form-group mb-2 mt-4 col-md-4">
@@ -308,50 +309,59 @@
                 </div>
             </div>  
             <div class="form-group mb-2 mt-4 col-md-4">
-            <label>reorderLevel</label>
-            <input type="text" class="form-control" placeholder="reorderLevel" formControlName="reorderLevel"
+            <label>Reorder Level</label>
+            <input type="text" class="form-control" placeholder="Reorder Level" formControlName="reorderLevel"
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.reorderLevel.errors }">
                
                 <div *ngIf="submitted &amp;&amp; inventoryForm.controls.reorderLevel.errors" class="text-danger validation-error">
-                  <div *ngIf="inventoryForm.controls.reorderLevel.errors.required">reorderLevel is required</div> 
+                  <div *ngIf="inventoryForm.controls.reorderLevel.errors.required">Reorder Level is required</div> 
                 </div>
             </div> 
              
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Purchase Date</label>
-            <input type="date" class="form-control" placeholder="Purchase Date" formControlName="expiryDate"  
+            <label>Expiry Date</label>
+            <input type="date" class="form-control" placeholder="Expiry Date" formControlName="expiryDate"  
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.expiryDate.errors }"> 
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.expiryDate.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.expiryDate.errors.required">Purchase Date is required</div> 
+                    <div *ngIf="inventoryForm.controls.expiryDate.errors.required"> Date is required</div> 
                   </div>
               </div>
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Warranty Expiration</label>
-            <input type="date" class="form-control" placeholder="Warranty Expiration" formControlName="quantityUsed"
+            <label>Quantity Used</label>
+            <input type="text" class="form-control" placeholder="Quantity Used" formControlName="quantityUsed"
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.quantityUsed.errors }">
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.quantityUsed.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.quantityUsed.errors.required">Warranty Expiration is required</div> 
+                    <div *ngIf="inventoryForm.controls.quantityUsed.errors.required">Quantity Used is required</div> 
                   </div>
-              </div>  
+              </div>
               <div class="form-group mb-2 mt-4 col-md-4">
-            <label>stockQty</label>
-            <input type="number" class="form-control" placeholder="stockQty" formControlName="stockQty"
+                <label>Quantity Left</label>
+                <input type="text" class="form-control" placeholder="quantityLeft" formControlName="quantityLeft"
+                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.quantityLeft.errors }">
+                     
+                      <div *ngIf="submitted &amp;&amp; inventoryForm.controls.quantityLeft.errors" class="text-danger validation-error">
+                        <div *ngIf="inventoryForm.controls.quantityLeft.errors.required">Quantity Left is required</div> 
+                      </div>
+                  </div>  
+              <div class="form-group mb-2 mt-4 col-md-4">
+            <label>Stock Qty</label>
+            <input type="number" class="form-control" placeholder="Stock Qty" formControlName="stockQty"
                   [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.stockQty.errors }">
                  
                   <div *ngIf="submitted &amp;&amp; inventoryForm.controls.stockQty.errors" class="text-danger validation-error">
-                    <div *ngIf="inventoryForm.controls.stockQty.errors.required">stockQty is required</div> 
+                    <div *ngIf="inventoryForm.controls.stockQty.errors.required">Stock Qty is required</div> 
                   </div>
               </div> 
                
                 <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Unit stockQty</label>
-            <input type="number" class="form-control" placeholder="Unit stockQty" formControlName="unitCost"  
+            <label>Unit Cost</label>
+            <input type="number" class="form-control" placeholder="Unit Cost" formControlName="unitCost"  
                     [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.unitCost.errors }"> 
                    
                     <div *ngIf="submitted &amp;&amp; inventoryForm.controls.unitCost.errors" class="text-danger validation-error">
-                      <div *ngIf="inventoryForm.controls.unitCost.errors.required">Unit stockQty is required</div> 
+                      <div *ngIf="inventoryForm.controls.unitCost.errors.required">Unit Cost is required</div> 
                     </div>
                 </div>
                 <div class="form-group mb-2 mt-4 col-md-8">
@@ -374,32 +384,23 @@
                 </div> 
                  
                   <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Model Number</label>
-            <input type="text" class="form-control" placeholder="Model Number" formControlName="weight"  
+            <label>Weight</label>
+            <input type="text" class="form-control" placeholder="Weight" formControlName="weight"  
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.weight.errors }"> 
                      
                       <div *ngIf="submitted &amp;&amp; inventoryForm.controls.weight.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.weight.errors.required">Model Number is required</div> 
+                        <div *ngIf="inventoryForm.controls.weight.errors.required">Weight is required</div> 
                       </div>
                   </div>
                   <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Serial Number</label>
-            <input type="text" class="form-control" placeholder="Serial Number" formControlName="totalValue"
+            <label>Total Value</label>
+            <input type="text" class="form-control" placeholder="Total Value" formControlName="totalValue"
                       [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.totalValue.errors }">
                      
                       <div *ngIf="submitted &amp;&amp; inventoryForm.controls.totalValue.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.totalValue.errors.required">Serial Number is required</div> 
+                        <div *ngIf="inventoryForm.controls.totalValue.errors.required">Total Value is required</div> 
                       </div>
                   </div>  
-                  <div class="form-group mb-2 mt-4 col-md-4">
-            <label>Photo Link</label>
-            <input type="text" class="form-control" placeholder="Photo Link" formControlName="photoLink"
-                      [ngClass]="{ 'is-invalid': submitted &amp;&amp; inventoryForm.controls.photoLink.errors }">
-                     
-                      <div *ngIf="submitted &amp;&amp; inventoryForm.controls.photoLink.errors" class="text-danger validation-error">
-                        <div *ngIf="inventoryForm.controls.photoLink.errors.required">Photo Link is required</div> 
-                      </div>
-                  </div> 
                    
                     <div class="form-group mb-2 mt-4 col-md-4">
             <label>Discontinued</label>

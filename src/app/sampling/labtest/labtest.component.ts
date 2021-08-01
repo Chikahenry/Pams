@@ -36,7 +36,7 @@ ngOnInit(): void {
 this.sess.checkLogin(); 
 this.getSamplings(); 
 this.intialiseTableProperties();
-console.log('token: ', localStorage.getItem('access_token'));
+// console.log('token: ', localStorage.getItem('access_token'));
 
 } 
 
@@ -91,7 +91,7 @@ getSamplings() {
   });
 
   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
-  console.log('samplingData: ', data);
+  // console.log('samplingData: ', data);
   this.spinnerService.hide();
   // this.samplingData = data.returnObject == null ? [] : data.returnObject;
   let types = 'Lab'

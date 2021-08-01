@@ -12,7 +12,7 @@
           <div class="card card-secondary">
               <div class="card-header row custome">
                 <div class="col-md-8">
-                  <h3 class="card-title">All Samplings 
+                  <h3 class="card-title">Lab Tests 
                     <!-- <button class="float-right" (click)="labTest(mymodal)">New lab test</button> -->
                   </h3>
 
@@ -43,11 +43,11 @@
                           <tbody>
                               <tr *ngFor="let mydata of samplingData; index as i">
                                   <td>{{ i + 1 }}</td>
-                                  <td>{{  1 }}</td> 
+                                  <td>{{ mydata.clientName }}</td> 
                                   <td>{{ mydata.staffName | titlecase }}</td>
                                   <td>{{ mydata.samplingDate | date: 'MMM d, y, h:mm:ss a'}}</td>
                                   <td>{{ mydata.samples.length | number }}</td> 
-                                  <td>{{ mydata.status === "0" ? "Submitted" : "Forwarded to Client" }}</td> 
+                                  <td>{{ mydata.status }}</td> 
                                   <td>
                                       <!-- <button class="btn btn-sm btn-outline-primary mr-3"
                                          ><i class="nav-icon fas fa-eye"></i> View

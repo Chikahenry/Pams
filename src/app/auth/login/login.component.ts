@@ -54,6 +54,9 @@ export class LoginComponent implements OnInit {
     }); 
   } 
  
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
 
   onSubmit(formAllData: any) {
     this.submitted = true;

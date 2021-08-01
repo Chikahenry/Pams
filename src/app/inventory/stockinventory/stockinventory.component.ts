@@ -316,7 +316,7 @@ export class StockinventoryComponent implements OnInit {
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     });
 
-    this.httpClient.post<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe(data => {
+    this.httpClient.put<any>(this.apiUrl, jsonData, { headers: reqHeader }).subscribe(data => {
       console.log('singleclientData: ', data);
       
       if(data.status == true) {

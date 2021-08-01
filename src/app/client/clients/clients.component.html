@@ -168,7 +168,7 @@
                   <tr *ngFor="let sample of clientSamples; index as i">
                       <td>{{ i + 1 }}</td>
                       <td>{{ sample.name }}</td>
-                      <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}td>
+                      <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}<td>
                       <td>{{ sample?.testTemplates?.length }}</td> 
                       <td>
                         <a (click)="deleteSample(sample.id)"

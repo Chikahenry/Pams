@@ -258,21 +258,21 @@
   <div class="m-4 " >
     <ul class="todo-list-li" >
 
-      <div *ngFor="let sample of sampleData; index as i">
-       
-        <li class="border">
-          <div class="icheck-primary ml-2 row"> 
-            <div class="text ml-4 mr-4">
+      
+      <div   *ngFor="let sample of sampleData; index as i">
+      <li class="border">
+        <div class="icheck-primary ml-2 row"> 
+          <div class="text ml-4 mr-4">
               <h5>{{sample.name+': '}}</h5>
             </div> 
               <div class="pdg">
                 <!-- <span class="text ml-4">Test: {{ test.name }}</span> 
                   <span class="text ml-5 pl-5">Result: {{ test.value }}</span>
                 <br> -->
-                <dl  *ngFor="let test of sample.tests">
-                  <dt class="pr-5">{{ test.name }}</dt>
-                  <dd>{{ test.value}}</dd> 
-                </dl>
+                <div  *ngFor="let test of sample.tests">
+                  <span class="pr-5">{{ test.name + ": "}}</span>
+                  <span class="ml-5">{{ test.value}}</span> 
+                </div>
               </div> 
              
           </div> 
@@ -290,7 +290,7 @@
   <div class=""> 
     <div class="card-header row">
       <h4 class="col-md-9">{{sampleName}} </h4>
-      <a    id="dismissBtn" (click)="modal.close('Save click')">X</a>
+      <a  class="pointer btn btn-secondary"  id="dismissBtn" (click)="modal.close('Save click')">X</a>
     </div> 
     <div class="card-body">
       <form class="" [formGroup]="testsForm" (ngSubmit)="onSubmitTest(testsForm.value)">
@@ -332,7 +332,7 @@
                   <tr>
                       <th>S/N</th>
                       <th>Test Name</th> 
-                      <th>Test limit</th>   
+                      <th>Test Value</th>   
                       <td>Delete</td>  
                   </tr>
               </thead>
