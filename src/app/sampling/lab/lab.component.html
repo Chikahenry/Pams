@@ -12,7 +12,7 @@
           <div class="card card-secondary">
               <div class="card-header row custome">
                 <div class="col-md-8">
-                  <h3 class="card-title">Sample Templates </h3>
+                  <h3 class="card-title">Lab Test Templates </h3>
 
                 </div> 
             <div class="col-md-4">
@@ -31,7 +31,7 @@
                               <tr>
                                   <th>S/N</th>
                                   <th>Name</th>
-                                  <th>Sample Type</th>   3
+                                  <th>Sample Type</th>    
                                   <th>Number of Tests</th> 
                                   <th  >Action</th>
                               </tr>
@@ -40,7 +40,7 @@
                               <tr *ngFor="let mydata of sampletemplatesData; index as i">
                                   <td>{{ i + 1 }}</td>
                                   <td>{{ mydata.name | titlecase }}</td>
-                                  <td>{{ mydata.sampleType == 0 ? 'Field Sampling' : mydata.sampleType == 2 ? "In-situ" : 'Lab Test' }}</td> 
+                                  <td>{{ mydata.sampleType == 0 ? 'Field Sampling' : mydata.sampleType == 2 ? "In-situ": 'Lab Test' }}</td> 
                                   <td>{{ mydata.testTemplates.length }}</td> 
                                   <td>
                                       <button class="btn btn-sm btn-primary" title="View"
@@ -71,12 +71,12 @@
 <ng-template #mymodal let-modal >
   <div   class="validate-form mt-2">
     <div class="card-header">
-      <h4 class=" bold-black">Selected Sample Template</h4>
+      <h4 class=" bold-black">Selected Lab Test Template</h4>
 
     </div>
 
     <div class="mt-2 ml-3 mb-4" *ngIf="singleSampleName">
-      <h4>{{singleSampleName}} : {{singleSampleType === "1" ? '   (Field Sampling)' : singleSampleType == 2 ? "  (In-situ)": '   (Lab Test)'}}</h4>
+      <h4>{{singleSampleName}} : {{singleSampleType == 0 ? '   (Field Sampling)' : singleSampleType == 2 ? "  (In-situ)": '   (Lab Test)'}}</h4>
 
       <div class=" ml-4 mb-4">
         <form [formGroup]="updateSampleTemplateForm" (ngSubmit)="onUpdateSample(updateSampleTemplateForm.value)">
@@ -92,11 +92,10 @@
             <div class="form-group col-md-5 mb-2">
               <select type="" class="form-control" placeholder="" formControlName="sampleType"
                 [ngClass]="{ 'is-invalid': submitted &amp;&amp; updateSampleTemplateForm.controls.sampleType.errors }">
-                <option>Select Sample Type</option>
-                <option value="0">Field Sampling</option>
+                <option>Select Sample Type</option> 
                 <option value="1">Lab Test</option>
-                <option value="2">Lab Test (in-situ)</option>
-                </select>
+              <option value="2">Lab Test (in-situ)</option>
+            </select>
                 <div *ngIf="submitted &amp;&amp; updateSampleTemplateForm.controls.sampleType.errors" class="text-danger validation-error">
                   <div *ngIf="updateSampleTemplateForm.controls.sampleType.errors.required">Sample Type is required</div> 
                 </div>
@@ -179,7 +178,7 @@
     </div>
 
     <div class="mt-2 ml-3 mb-4" *ngIf="sampleName">
-      <h4>{{sampleName}} : {{sampleType === "1" ? '   (Field Sampling)' : singleSampleType == 2 ? "  (In-situ)": '   (Lab Test)'}}</h4>
+      <h4>{{sampleName}} : {{sampleType == 0 ? '   (Field Sampling)' : singleSampleType == 2 ? "  (In-situ)": '   (Lab Test)'}}</h4>
 
     </div>
     <div class=" ml-4 mb-4" *ngIf="showSampleForm">
@@ -196,8 +195,7 @@
           <div class="form-group col-md-5 mb-2">
             <select type="" class="form-control" placeholder="" formControlName="sampleType"
               [ngClass]="{ 'is-invalid': submitted &amp;&amp; sampleTemplateForm.controls.sampleType.errors }">
-              <option>Select Sample Type</option>
-              <option value="0">Field Sampling</option>
+              <option>Select Sample Type</option> 
               <option value="1">Lab Test</option>
               <option value="2">Lab Test (in-situ)</option>
               </select>
@@ -265,7 +263,7 @@
                     <td>{{ test.limit }}</td> 
                      <td><a (click)="deleteTest(test.name)"
                       class="btn btn-outline-danger" style="cursor:pointer;">
-                       <i class="nav-icon ml-3 fas fa-trash-alt"></i></a></td>
+                      <i class="nav-icon ml-3 fas fa-trash-alt"></i></a></td>
                 </tr>
             </tbody>
         </table>  

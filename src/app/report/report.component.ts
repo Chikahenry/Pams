@@ -34,7 +34,7 @@ export class ReportComponent implements OnInit {
   invoicePaid: boolean;
   paid: boolean;
   clientName: any;
-  clientSamplings: any; 
+  clientSamplings: any;  
 
   constructor(private formBuilder: FormBuilder,
               private httpClient: HttpClient,

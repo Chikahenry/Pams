@@ -41,7 +41,7 @@ export class ForwardedSamplingComponent implements OnInit {
   updateSampleTemplateForm: FormGroup;
   sampleTypeId: number;
   sampleId: any;
-  singleClient: any;
+  singleClient: any[] = [];
   clientsData: any;
   clientId: any;
   clientSamples: any;
@@ -181,6 +181,7 @@ export class ForwardedSamplingComponent implements OnInit {
   this.showModal(modal)
   console.log("test ", this.tests)
   this.sampleName = sample.name
+  this.sampleType = sample.sampleType
   this.testsForm = this.formBuilder.group({
     test: ['', Validators.required], 
     value: ['', Validators.required], 
@@ -225,7 +226,7 @@ export class ForwardedSamplingComponent implements OnInit {
  submitSample(){
    let obj = {
      name: this.sampleName,
-     sampleType: 1,
+     sampleType: this.sampleType,
      tests: this.items
    }
    if(this.sampleData.some(d => d.name === obj.name)){
@@ -247,6 +248,44 @@ export class ForwardedSamplingComponent implements OnInit {
    }
  }
 
+ uploadSampling(){
+    const obj = {
+      samplingId: this.sampleId,
+      name: this.sampleName,
+      sampleType: this.sampleType,
+      tests: this.items
+    }
+
+    this.apiUrl = environment.AUTHAPIURL + 'sample/sample';
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsSampleData: ', data);
+      
+       if(data.status == true){
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 5000,
+          }); 
+       }else {
+        Swal.fire({
+            icon: "error",
+            title: "Oop...",
+            text: data.message,
+            showConfirmButton: true,
+            timer: 7000,
+          }); 
+       }
+    });
+
+}
  forwardSampling(){
    let date = new Date()
    const obj = {
@@ -254,7 +293,7 @@ export class ForwardedSamplingComponent implements OnInit {
      staffId: localStorage.getItem('id'),
      samplingTime: date,
      samplingDate: date,
-     sampleType: 1,
+     sampleType: this.sampleType,
      clientId:this.clientId,
      samples: this.sampleData
    }
@@ -362,7 +401,15 @@ export class ForwardedSamplingComponent implements OnInit {
  viewClient(modal, singleClient){
   this.showModal(modal)
   this.clientId = singleClient.id
-  this.clientName = singleClient.name
+  this.clientName = singleClient.name == null ? singleClient.clientName : singleClient.name
+  this.getClientSamples()
+ }
+
+ viewSampling(modal, singleClient){
+  this.showModal(modal)
+  this.clientId = this.getClient(singleClient.clientName)
+  this.sampleId = singleClient.id
+  this.clientName = singleClient.name == null ? singleClient.clientName : singleClient.name
   this.getClientSamples()
  }
 
@@ -377,13 +424,13 @@ export class ForwardedSamplingComponent implements OnInit {
   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
     console.log('clientsSampleData: ', data);
     this.clientSamples = data.returnObject == null ? [] : data.returnObject;
-    this.clientSamples =this.clientSamples.filter(e => e.sampleType == 2)
+    this.clientSamples =this.clientSamples.filter(e => e.sampleType >= 1)
      
   });
 } 
 
-  getClient(id) {
-    this.apiUrl = environment.AUTHAPIURL + 'client/getclient/' + id;
+  getClient(name) {
+    this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
 
     const reqHeader = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -391,22 +438,39 @@ export class ForwardedSamplingComponent implements OnInit {
     });
   
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
-      console.log('singleClient: ', data);
       this.singleClient = data.returnObject == null ? [] : data.returnObject;
-      // this.spinnerService.hide();
+      this.singleClient = this.singleClient.filter(c => c.name === name);
+      console.log('singleClient: ', this.singleClient[0].id);
     });
-    return this.singleClient?.name
+    for (let i of this.singleClient){
+      
+      let clientId = i.id
+      return clientId
+    }
   }
 
-  viewSampling(modal, singleSampling) {
-     
-     
-    this.showModal(modal)
-    this.clientName = singleSampling.name
-    this.singleSampleType = singleSampling.sampleType 
-    this.testTemplate = singleSampling.testTemplates
-    this.sampleId = singleSampling.id
+  getNumberOfSamplings(samplingId, sampleType){
+    let sampling = this.samplingData.filter(m => m.id === samplingId)
+    if (sampleType == 0){
+      let sample = sampling[0].samples.filter(k => k.sampleType === 0)
+  
+      return sample.length
+    }
+ 
+    let sample = sampling[0].samples.filter(k => k.sampleType >= 1)
+
+    return sample.length
+
   }
+  // viewSampling(modal, singleSampling) {
+     
+     
+  //   this.showModal(modal)
+  //   this.clientName = singleSampling.name
+  //   this.singleSampleType = singleSampling.sampleType 
+  //   this.testTemplate = singleSampling.testTemplates
+  //   this.sampleId = singleSampling.id
+  // }
  
     
 

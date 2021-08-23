@@ -46,7 +46,7 @@
                                     <td>{{ mydata.clientName }}</td> 
                                     <td>{{ mydata.staffName | titlecase }}</td>
                                     <td>{{ mydata.samplingDate | date: 'MMM d, y,'}}</td>
-                                    <td>{{ mydata.samples.length | number }}</td> 
+                                    <td>{{ getNumberOfSamplings(mydata.id, 1 ) }}</td> 
                                     <td>{{ mydata.status }}</td> 
                                     <td>
                                         <!-- <button class="btn btn-sm btn-outline-primary mr-3"
@@ -95,8 +95,7 @@
                             <th>S/N</th>
                             <th>Name</th>
                             <!-- <th>value</th> -->
-                            <th>Address</th>
-                            <th>Sample Count</th>    
+                            <th>Address</th> 
                             <th>Date registered</th>    
                             <th  >Details</th>
                         </tr>
@@ -106,8 +105,7 @@
                             <td>{{ i + 1 }}</td>
                             <td>{{ mydata.name | titlecase }}</td>
                             <!-- <td>{{ mydata.value  }}</td> -->
-                            <td>{{ mydata.address  }}</td>
-                            <td>{{ mydata.samples}}</td>  
+                            <td>{{ mydata.address  }}</td> 
                             <td>{{ mydata.registeredDate | date }}</td>  
                             <td>
                                 <button class="btn btn-sm btn-outline-primary"
@@ -161,8 +159,8 @@
                     <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</td> 
                     <td  > {{ sample?.testTemplates?.length }}</td> 
                      <td><a (click)="viewTest(testModal, sample)"
-                      class="badge badge-primary Delete-icon   pointer color-white delete-box" style="cursor:pointer;">
-                      Input Test Result <i class="nav-icon ml-3 fas fa-edit-alt"></i></a></td>
+                      class="btn btn-outline-primary" title="Input Result" style="cursor:pointer;">
+                    <i class="nav-icon ml-3 fas fa-edit"></i></a></td>
                 </tr>
             </tbody>
         </table>   
@@ -259,8 +257,8 @@
                         <td>{{ item.value }}</td> 
                          <td>
                           <a (click)="removeTest( item)"
-                          class="badge badge-danger Delete-icon  pointer color-white delete-box" style="cursor:pointer;">
-                          Delete Test Result <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                          class="btn btn-outline-danger" title="Delete" style="cursor:pointer;">
+                          <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
                          </td>
                     </tr>
                 </tbody>

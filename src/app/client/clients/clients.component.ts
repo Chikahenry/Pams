@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 export class ClientsComponent implements OnInit {
   apiUrl: string;
   clientsData: any;
+  count: number = 0;
   dtOptions: any = {};
   modalOptions: NgbModalOptions;
   closeResult: string; 
@@ -38,6 +39,10 @@ export class ClientsComponent implements OnInit {
   clientId: any;
   clientSamples: any[] = [];
   addSampleForm: FormGroup;
+  labTest: any;
+  fieldSamples: any;
+  in_situ: any;
+  testList: any;
 
   constructor(private formBuilder: FormBuilder,
               private httpClient: HttpClient,
@@ -145,6 +150,7 @@ export class ClientsComponent implements OnInit {
     this.showClientForm = true
     this.showSampleForm = false
     this.sampledata = []
+    this.clientName = null
     this.showModal(modal)
   }
 
@@ -172,8 +178,17 @@ export class ClientsComponent implements OnInit {
 
     let obj = formAllData.sample
     
-
-     this.sampledata.push(obj)
+    if(this.sampledata.filter(m => m === obj).length > 0){
+      Swal.fire({
+        icon: "error",
+        title: "Sample Exists",
+        text: "Cannot add a Sample template twice",
+        showConfirmButton: true,
+        timer: 5000,
+      });
+     }else{
+       this.sampledata.push(obj)
+     }
      console.log("werty", this.sampledata)
      this.submitted = false
      this.sampleForm = this.formBuilder.group({
@@ -188,8 +203,18 @@ export class ClientsComponent implements OnInit {
     }
 
     let obj = formAllData.sample
-     
-     this.addSampledata.push(obj)
+
+     if(this.clientSamples.filter(m => m.id === obj).length > 0){
+      Swal.fire({
+        icon: "error",
+        title: "Sample Exists",
+        text: "This Sample already exists for this client",
+        showConfirmButton: true,
+        timer: 5000,
+      });
+     }else{
+       this.addSampledata.push(obj)
+     }
     //  console.log("werty", this.sampledata)
      this.submitted = false
      this.addSampleForm = this.formBuilder.group({
@@ -245,8 +270,11 @@ export class ClientsComponent implements OnInit {
     });
   
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
-      console.log('clientsData: ', data);
+      console.log('sampletemplateData: ', data);
       this.sampleTemplateData = data.returnObject == null ? [] : data.returnObject;
+      this.fieldSamples = this.sampleTemplateData.filter(m => m.sampleType == 0);
+      this.labTest = this.sampleTemplateData.filter(m => m.sampleType >= 1);
+      // this.in_situ = this.sampleTemplateData.filter(m => m.sampleType == 2);
        
     });
   }
@@ -347,6 +375,7 @@ export class ClientsComponent implements OnInit {
         });
         this.getclients();
         this.clientName = ''
+        document.getElementById("dismissBtn").click()
       }else {
         Swal.fire({
           icon: "error",
@@ -361,6 +390,27 @@ export class ClientsComponent implements OnInit {
       this.spinnerService.hide();
     });
   }  
+
+  getSampleTemplateById(sampleTemplateId){
+    this.testList = "";
+    this.apiUrl = environment.AUTHAPIURL + 'sample/sampletemplate/' + sampleTemplateId;
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('clientsSampleData: ', data);
+      this.testList =  data.returnObject;
+       
+    });
+  }
+
+  viewSample(modal, sampleId){
+    this.getSampleTemplateById(sampleId)
+    this.showModal(modal)
+  }
 
   deleteSample(sampleId) {
     // this.spinnerService.show()

@@ -17,7 +17,7 @@ export class SessionService {
 
     // tslint:disable-next-line: triple-equals
     if (this.validtoken == '' || this.validtoken === null) {
-      this.router.navigate(['/signup']);
+      this.router.navigate(['/login']);
     }
   }
 

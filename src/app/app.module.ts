@@ -57,6 +57,8 @@ import { InvoicingComponent } from './invoicing/invoicing.component';
 import { ReportComponent } from './report/report.component';
 import { StockinventoryComponent } from './inventory/stockinventory/stockinventory.component';
 import { EquipmentinventoryComponent } from './inventory/equipmentinventory/equipmentinventory.component';
+import { LabComponent } from './sampling/lab/lab.component';
+import { FieldComponent } from './sampling/field/field.component';
 
 
 @NgModule({
@@ -93,7 +95,9 @@ import { EquipmentinventoryComponent } from './inventory/equipmentinventory/equi
       ContactusComponent,
       HomeComponent,
       InvoicingComponent,
-      ReportComponent
+      ReportComponent,
+      LabComponent,
+      FieldComponent,
    ],
   imports: [
     BrowserModule,

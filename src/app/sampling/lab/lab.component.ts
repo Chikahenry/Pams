@@ -9,11 +9,11 @@ import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-sampleTemplate',
-  templateUrl: './sampleTemplate.component.html',
-  styleUrls: ['./sampleTemplate.component.scss']
+  selector: 'app-lab',
+  templateUrl: './lab.component.html',
+  styleUrls: ['./lab.component.scss']
 })
-export class SampleTemplateComponent implements OnInit {
+export class LabComponent implements OnInit {
   apiUrl: string;
   sampletemplatesData: any;
   dtOptions: any = {};
@@ -119,6 +119,7 @@ export class SampleTemplateComponent implements OnInit {
     this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
       console.log('sampletemplatesData: ', data);
       this.sampletemplatesData = data.returnObject == null ? [] : data.returnObject;
+      this.sampletemplatesData = this.sampletemplatesData.filter(m => m.sampleType >= 1)
       this.spinnerService.hide();
     });
   }
@@ -174,6 +175,56 @@ export class SampleTemplateComponent implements OnInit {
      }
    });
  }
+
+ addTestToTemplate(formdata){
+  this.submitted  = true
+  if(this.testsForm.invalid) {
+    return
+  }
+  let json =  {
+    sampleTemplateId: this.sampleId,
+    name: formdata.name,
+    limit: formdata.limit,
+    value: ""
+  }
+  let obj = [json]
+
+  this.apiUrl = environment.AUTHAPIURL + 'sample/testtemplate';
+
+  const reqHeader = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+  });
+
+  this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+    console.log('singlesampleTemplateData: ', data);
+    
+    if(data.status == true) {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: data.message,
+        showConfirmButton: true,
+        timer: 5000,
+      });
+      this.getsampletemplates();
+      this.testTemplate.push(json)
+      this.initialiseForms()
+      this.sampleName = ''
+    }else {
+      Swal.fire({
+        icon: "error",
+        title: "Oop...",
+        text: data.message,
+        showConfirmButton: true,
+        timer: 5000,
+      });
+      
+    }
+
+    this.spinnerService.hide();
+  });
+}
 
   viewAddSampleTemplate(modal){
     this.initialiseForms()
@@ -264,55 +315,6 @@ export class SampleTemplateComponent implements OnInit {
     });
   }
   
-  addTestToTemplate(formdata){
-    this.submitted  = true
-    if(this.testsForm.invalid) {
-      return
-    }
-    let json =  {
-      sampleTemplateId: this.sampleId,
-      name: formdata.name,
-      limit: formdata.limit,
-      value: ""
-    }
-    let obj = [json]
-
-    this.apiUrl = environment.AUTHAPIURL + 'sample/testtemplate';
- 
-    const reqHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    });
-
-    this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
-      console.log('singlesampleTemplateData: ', data);
-      
-      if(data.status == true) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-        });
-        this.getsampletemplates();
-        this.testTemplate.push(json)
-        this.initialiseForms()
-        this.sampleName = ''
-      }else {
-        Swal.fire({
-          icon: "error",
-          title: "Oop...",
-          text: data.message,
-          showConfirmButton: true,
-          timer: 5000,
-        });
-        
-      }
- 
-      this.spinnerService.hide();
-    });
-  }
   createSampleTemplate() {
     this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + 'sample/sampletemplate';
@@ -365,10 +367,6 @@ export class SampleTemplateComponent implements OnInit {
     this.updateSampleTemplateForm = this.formBuilder.group({
       name: [singlesampleTemplate.name, Validators.required],
       sampleType: [this.sampleTypeId, Validators.required], 
-    });
-    this.testsForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      limit: ['', Validators.required], 
     });
     this.showModal(modal)
     this.singleSampleName = singlesampleTemplate.name

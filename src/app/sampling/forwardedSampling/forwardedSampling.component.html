@@ -15,9 +15,9 @@
                   <h3 class="card-title">All Samplings </h3>
 
                 </div> 
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <a (click)="viewAddLabtext(labtest)" class="btn btn-block btn button-login">
-                Add Lab Tests</a></div>
+                Add Lab Tests</a></div> -->
 
               </div>
               <!-- /.card-header -->
@@ -33,7 +33,8 @@
                                   <th>Client Name</th> 
                                   <th>Analyst</th>   
                                   <th>Date & Time</th>    
-                                  <th>Number of Samples</th>  
+                                  <th>Field Sampling</th>  
+                                  <th>Lab Test</th>   
                                   <th>Status</th> 
                                   <th>Details</th>
                               </tr>
@@ -44,12 +45,19 @@
                                   <td>{{  mydata.clientName }}</td> 
                                   <td>{{ mydata.staffName | titlecase }}</td>
                                   <td>{{ mydata.samplingDate | date: 'MMM d, y, h:mm:ss a'}}</td>
-                                  <td>{{ mydata.samples.length | number }}</td> 
+                                  <td>{{ getNumberOfSamplings(mydata.id, 0 ) }}</td> 
+                                  <td>{{ getNumberOfSamplings(mydata.id, 1 ) }}</td>  
                                   <td>{{ mydata.status }}</td> 
                                   <td>
-                                      <button class="btn btn-sm btn-outline-primary mr-3"
-                                          (click)="generateInvoice(mymodal, mydata)"><i class="nav-icon fas fa-eye"></i> View
+                                      <button class="btn btn-sm btn-outline-primary mr-3" title="Generate Invoice"
+                                          (click)="generateInvoice(mymodal, mydata)"><i class="nav-icon fas fa-file"></i> 
                                       </button>
+                                      <button class="btn btn-sm btn-outline-primary mr-3" title="Add Lab Test"
+                                      (click)="viewSampling(labModal, mydata)"><i class="nav-icon fas fa-edit"></i> 
+                                      </button>
+                                      <!-- <button class="btn btn-sm btn-outline-primary mr-3" titlte="Add Field Sampling"
+                                      ><i class="nav-icon fas fa-pen"></i> 
+                                      </button> -->
                                        
                                   </td>
                               </tr>
@@ -179,8 +187,7 @@
                           <th>S/N</th>
                           <th>Name</th>
                           <!-- <th>value</th> -->
-                          <th>Address</th>
-                          <th>Sample Count</th>    
+                          <th>Address</th>  
                           <th>Date registered</th>    
                           <th  >Details</th>
                       </tr>
@@ -190,8 +197,7 @@
                           <td>{{ i + 1 }}</td>
                           <td>{{ mydata.name | titlecase }}</td>
                           <!-- <td>{{ mydata.value  }}</td> -->
-                          <td>{{ mydata.address  }}</td>
-                          <td>{{ mydata.samples}}</td>  
+                          <td>{{ mydata.address  }}</td> 
                           <td>{{ mydata.registeredDate | date }}</td>  
                           <td>
                               <button class="btn btn-sm btn-outline-primary"
@@ -204,8 +210,7 @@
               </table>
           </div>
 
-      </div>
-      <div *ngIf="items.length > 0"><button class="btn float-right button-login" (click)="submitSample()" >Submit </button></div>
+      </div> 
       <!-- /.card-body -->
       <div class="card-footer">
           <!-- <button type="submit" (click)="forwardSchedule(schedulemodal)" class="btn btn button-login">Forward
@@ -222,7 +227,6 @@
         <h4>{{clientName}}</h4>
         
       </div>
-      <div *ngIf="sampleData.length > 0" class="col-md-3"><button class="btn float-right button-login" (click)="forwardSampling()" >Forward Tests </button></div>
     </div>
   </div>
 
@@ -242,11 +246,11 @@
               <tr  *ngFor="let sample of clientSamples; index as i">
                   <td >{{ i + 1 }}</td>
                   <td  > {{ sample.name }}</td> 
-                  <td>{{ sample.sampleType == 0 ? "Field Sampling" : "Lab Test" }}</td> 
+                  <td>{{ sample.sampleType == 0 ? "Field Sampling" : sample.sampleType == 1 ? "Lab Test" : "In-situ"}}</td> 
                   <td  > {{ sample?.testTemplates?.length }}</td> 
                    <td><a (click)="viewTest(testModal, sample)"
-                    class="badge badge-primary Delete-icon   pointer color-white delete-box" style="cursor:pointer;">
-                    Input Test Result <i class="nav-icon ml-3 fas fa-edit-alt"></i></a></td>
+                    class="btn btn-outline-primary" style="cursor:pointer;" title="Input Result ">
+                    <i class="fas fa-edit"></i></a></td>
               </tr>
           </tbody>
       </table>   
@@ -282,15 +286,18 @@
 
     </ul> 
   </div>
+  <div *ngIf="sampleData.length > 0" class="col-md-3"><button class="btn float-right button-login" (click)="forwardSampling()" >Upload Tests </button></div>
 
 
 </ng-template>
+
+
 
 <ng-template let-modal #testModal>
   <div class=""> 
     <div class="card-header row">
       <h4 class="col-md-9">{{sampleName}} </h4>
-      <a  class="pointer btn btn-secondary"  id="dismissBtn" (click)="modal.close('Save click')">X</a>
+      <a  class="pointer button-login btn"  id="dismissBtn" (click)="modal.close('Save click')">X</a>
     </div> 
     <div class="card-body">
       <form class="" [formGroup]="testsForm" (ngSubmit)="onSubmitTest(testsForm.value)">
@@ -343,8 +350,8 @@
                       <td>{{ item.value }}</td> 
                        <td>
                         <a (click)="removeTest( item)"
-                        class="badge badge-danger Delete-icon  pointer color-white delete-box" style="cursor:pointer;">
-                        Delete Test Result <i class="nav-icon ml-3 fas fa-trash-alt"></i></a>
+                        class="btn btn-outline-danger" title="Delete" style="cursor:pointer;">
+                         <i class="fas fa-trash-alt"></i></a>
                        </td>
                   </tr>
               </tbody>
@@ -368,4 +375,79 @@
       <div *ngIf="items.length > 0"><button class="btn float-right button-login" (click)="submitSample()" >Submit </button></div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #labModal let-modal>
+  <div class="">
+    <div class="card-header row">
+      <div class="col-md-9">
+        <h4>{{clientName}}</h4>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body m-4 shadow " > 
+      <div >
+        <table class="table table-bordered table-condensed" *ngIf="clientSamples;" width="100%">
+          <thead>
+              <tr>
+                  <th>S/N</th>
+                  <th>Sample Name</th> 
+                  <th>Sample Type</th>   
+                  <th>Test Number</th>   
+                  <td>Details</td>  
+              </tr>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let sample of clientSamples; index as i">
+                  <td >{{ i + 1 }}</td>
+                  <td  > {{ sample.name }}</td> 
+                  <td>{{ sample.sampleType == 0 ? "Field Sampling" : sample.sampleType == 1 ? "Lab Test" : "In-situ"}}</td> 
+                  <td  > {{ sample?.testTemplates?.length }}</td> 
+                   <td><a (click)="viewTest(testModal, sample)"
+                    class="btn btn-outline-warning" style="cursor:pointer;" title="Input Result ">
+                    <i class="fas fa-edit"></i></a></td>
+              </tr>
+          </tbody>
+      </table>   
+ 
+      </div>
+ 
+  </div>
+
+  <div class="m-4 " >
+    <ul class="todo-list-li" >
+
+      
+      <div   *ngFor="let sample of sampleData; index as i">
+      <li class="border">
+        <div class="icheck-primary ml-2 row"> 
+          <div class="text ml-4 mr-4">
+              <h5>{{sample.name+': '}}</h5>
+            </div> 
+              <div class="pdg">
+                <!-- <span class="text ml-4">Test: {{ test.name }}</span> 
+                  <span class="text ml-5 pl-5">Result: {{ test.value }}</span>
+                <br> -->
+                <div  *ngFor="let test of sample.tests">
+                  <span class="pr-5">{{ test.name + ": "}}</span>
+                  <span class="ml-5">{{ test.value}}</span> 
+                </div>
+              </div> 
+             
+          </div> 
+
+        </li>
+      </div>
+
+    </ul> 
+  </div>
+  <div *ngIf="sampleData.length > 0" class="col-md-3">
+    <button class="btn float-right button-login" (click)="uploadSampling()" >
+      Upload Tests </button>
+    </div>
+
+
+
 </ng-template>

@@ -30,6 +30,8 @@ import { InvoicingComponent } from './invoicing/invoicing.component';
 import { ReportComponent } from './report/report.component';
 import { EquipmentinventoryComponent } from './inventory/equipmentinventory/equipmentinventory.component';
 import { StockinventoryComponent } from './inventory/stockinventory/stockinventory.component';
+import { FieldComponent } from './sampling/field/field.component';
+import { LabComponent } from './sampling/lab/lab.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -64,6 +66,8 @@ const routes: Routes = [
    
   {path: 'displayuser', component: DisplayuserComponent}, 
   {path: 'fieldSampling', component: FieldsamplingComponent}, 
+  {path: 'field', component: FieldComponent}, 
+  {path: 'lab', component: LabComponent}, 
   {path: 'labTest', component: LabtestComponent}, 
   {path: 'reports', component: ReportComponent}, 
   {path: 'changepassword', component: ChangepasswordComponent}, 

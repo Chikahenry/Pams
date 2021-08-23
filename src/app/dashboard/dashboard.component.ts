@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   clientsData: any;
   usersData: any;
   sampleTemplateData: any;
+  invoices: any;
 
 
   // tslint:disable-next-line: max-line-length
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit {
     this.getclients()
     this.getSampleTemplates()
     this.getUserData()
+    this.getInvoices()
     // this.getDashboardData();  
 
     this.isRun = localStorage.getItem('is_reload');
@@ -47,6 +49,22 @@ export class DashboardComponent implements OnInit {
 
   logout() {
     this.sess.logOut();
+  }
+
+  getInvoices() {
+    // this.spinnerService.show();
+    this.apiUrl = environment.AUTHAPIURL + 'invoice/invoices';
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      console.log('invoicesData: ', data);
+      this.spinnerService.hide();
+      this.invoices = data.returnObject == null ? [] : data.returnObject;
+    });
   }
 
   refresh() {

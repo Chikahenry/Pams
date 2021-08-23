@@ -14,18 +14,54 @@ import Swal from 'sweetalert2';
   styleUrls: ['./labtest.component.scss']
 })
 export class LabtestComponent implements OnInit {
-  sampleTemplateForm: any;
-  modalOptions: NgbModalOptions;
-  testsForm: any;
-  clientSampleTemplates: any;
-  dtOptions: any = {};
   apiUrl: string;
-  closeResult: string;
   samplingData: any;
-  clientId:any;
+  dtOptions: any = {};
+  modalOptions: NgbModalOptions;
+  closeResult: string; 
+  sampleTemplateForm: FormGroup; 
+  submitted: boolean = false;
+  selectedsampling: any;
+  corporateLogo: any;
+  sampleTemplateYear: string;
+  sampleTemplateMonth: any;
+  showPrintInvoice: boolean = false;
+  sampleTemplateID: any; 
+  testsForm: FormGroup;
+  showSampleForm: boolean;
+  sampleName: any;
+  sampleType: any;
+  showTestForm: boolean;
+  testdata: {name: string; limit: string }[];
+  clientName: any;
+  singleSampleType: any;
+  testTemplate: [];
+  updateSampleTemplateForm: FormGroup;
+  sampleTypeId: number;
+  sampleId: any;
+  singleClient: any[] = [];
   clientsData: any;
+  clientId: any;
+  clientSamples: any;
+  tests: any;
+  items: {
+    limit: string,
+    name: string,
+    value: any
+  }[] = [];
+  limit : any;
+  sampleData: any[] = [];
+  sampleList: any;
+  invoiceForm: FormGroup;
+  invoiceItems: {
+    name: string,
+    amount: string
+  }[] = [];
+  samplingId: any;
+  dueDateForm: FormGroup;
+  newTestForm: FormGroup;
 
-  constructor(      
+  constructor( private formBuilder: FormBuilder,
     private httpClient: HttpClient,
     private router: Router,
     private sess: SessionService,
@@ -95,8 +131,17 @@ getSamplings() {
   this.spinnerService.hide();
   // this.samplingData = data.returnObject == null ? [] : data.returnObject;
   let types = 'Lab'
-  this.samplingData = data.returnObject.filter( i => types.includes( i.sampleType))
+  this.samplingData = data.returnObject.filter( c => c.samples.filter(i =>  i.sampleType >= 1))
   });
+}
+
+getNumberOfSamplings(samplingId, sampleType){
+  let sampling = this.samplingData.filter(m => m.id === samplingId)
+   
+  let sample = sampling[0].samples.filter(k => k.sampleType >= 1)
+
+  return sample.length
+
 }
 
 getclients() {
@@ -115,9 +160,224 @@ getclients() {
 
   });
 }
+ 
+viewAddLabtest(modal){
+  this.showModal(modal)
+   this.getclients()
+}
 
-getclientTemplates() {
-  this.spinnerService.show();
+viewTest(modal, sample){
+  this.tests = sample.testTemplates
+  this.testsForm = this.formBuilder.group({
+    test: ['', Validators.required], 
+    value: ['', Validators.required], 
+  });
+ this.showModal(modal)
+ console.log("test ", this.tests)
+ this.sampleName = sample.name
+ this.sampleTemplateID = sample.testTemplates[0].sampleTemplateID
+ this.sampleType = sample.sampleType
+ this.testsForm = this.formBuilder.group({
+   test: ['', Validators.required], 
+   value: ['', Validators.required], 
+ });
+}
+
+setLimit(){
+  this.limit = "limit"
+}
+
+onSubmitTest(formData){
+   this.submitted = true
+   if(this.testsForm.invalid){
+     return
+   }
+   this.setLimit()
+   let obj = {
+     limit: this.limit,
+     name: formData.test,
+     value: formData.value
+   }
+   
+   if(this.items.some(d => d.name === obj.name)){
+     this.items = this.items.filter(e => e.name !== obj.name)
+     this.items.push(obj)
+   }else{
+     this.items.push(obj)
+     
+   }
+   
+}
+
+viewNewTestModal(modal){
+  this.newTestForm = this.formBuilder.group({
+    test: ['', Validators.required], 
+    limit: ['', Validators.required], 
+  });
+  this.showModal(modal)
+}
+
+onSubmitNewTest(formData){
+  const obj = [{
+    sampleTemplateId: this.sampleTemplateID,
+    value: '',
+    limit: formData.limit,
+    name: formData.test,
+  }]
+  
+  this.apiUrl = environment.AUTHAPIURL + 'sample/testtemplate';
+
+  const reqHeader = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+  });
+
+  this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+    console.log('clientsSampleData: ', data);
+    
+     if(data.status == true){
+      Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 5000,
+        }); 
+        document.getElementById('closeNewTestBtn').click()
+     }else {
+      Swal.fire({
+          icon: "error",
+          title: "Oop...",
+          text: data.message,
+          showConfirmButton: true,
+          timer: 7000,
+        }); 
+     }
+  });
+}
+
+submitSample(){
+  let obj = {
+    name: this.sampleName,
+    sampleType: this.sampleType,
+    tests: this.items
+  }
+  if(this.sampleData.some(d => d.name === obj.name)){
+     this.sampleData = this.sampleData.filter(e => e.name !== obj.name)
+     this.sampleData.push(obj)
+  }else {
+    this.sampleData.push(obj)
+    this.items = []
+    console.log("samplejnl  ",this.sampleData)
+    Swal.fire({
+       icon: "success",
+       title: "Success",
+       text: "Test Value save successfully",
+       showConfirmButton: true,
+       timer: 5000,
+     }); 
+     document.getElementById("dismissBtn").click()
+
+  }
+}
+
+uploadSampling(){
+   const obj = {
+     samplingId: this.sampleId,
+     name: this.sampleName,
+     sampleType: this.sampleType,
+     tests: this.items
+   }
+
+   this.apiUrl = environment.AUTHAPIURL + 'sample/sample';
+
+   const reqHeader = new HttpHeaders({
+     'Content-Type': 'application/json',
+     'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+   });
+
+   this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+     console.log('clientsSampleData: ', data);
+     
+      if(data.status == true){
+       Swal.fire({
+           icon: "success",
+           title: "Success",
+           text: data.message,
+           showConfirmButton: true,
+           timer: 5000,
+         }); 
+      }else {
+       Swal.fire({
+           icon: "error",
+           title: "Oop...",
+           text: data.message,
+           showConfirmButton: true,
+           timer: 7000,
+         }); 
+      }
+   });
+
+}
+forwardSampling(){
+  let date = new Date()
+  const obj = {
+    staffName: localStorage.getItem('fullname'),
+    staffId: localStorage.getItem('id'),
+    samplingTime: date,
+    samplingDate: date,
+    sampleType: this.sampleType,
+    clientId:this.clientId,
+    samples: this.sampleData
+  }
+  
+  this.apiUrl = environment.AUTHAPIURL + 'sample/sampling';
+
+ const reqHeader = new HttpHeaders({
+   'Content-Type': 'application/json',
+   'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+ });
+
+ this.httpClient.post<any>(this.apiUrl, obj, { headers: reqHeader }).subscribe(data => {
+   console.log('clientsSampleData: ', data);
+   
+    if(data.status == true){
+     Swal.fire({
+         icon: "success",
+         title: "Success",
+         text: data.message,
+         showConfirmButton: true,
+         timer: 5000,
+       }); 
+       document.getElementById('closeClientBtn').click()
+    }else {
+     Swal.fire({
+         icon: "error",
+         title: "Oop...",
+         text: data.message,
+         showConfirmButton: true,
+         timer: 7000,
+       }); 
+    }
+ });
+}
+
+viewClient(modal, singleClient){
+  this.showModal(modal)
+  this.clientId = singleClient.id
+  this.clientName = singleClient.name == null ? singleClient.clientName : singleClient.name
+  this.getClientSamples()
+ }
+
+ viewSampling(modal, singleClient){
+  this.showModal(modal)
+  this.clientId = this.getClient(singleClient.clientName)
+  this.sampleId = singleClient.id
+  this.clientName = singleClient.name == null ? singleClient.clientName : singleClient.name
+  this.getClientSamples()
+ }
+
+ getClientSamples() { 
   this.apiUrl = environment.AUTHAPIURL + 'sample/clienttemplates/' + this.clientId;
 
   const reqHeader = new HttpHeaders({
@@ -126,24 +386,41 @@ getclientTemplates() {
   });
 
   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
-    console.log('clientsData: ', data);
-    this.spinnerService.hide();
-    this.clientSampleTemplates = data.returnObject == null ? [] : data.returnObject;
-    console.log("CST ", this.clientSampleTemplates)
+    console.log('clientsSampleData: ', data);
+    this.clientSamples = data.returnObject == null ? [] : data.returnObject;
+    this.clientSamples =this.clientSamples.filter(e => e.sampleType >= 1)
+     
   });
-}
+} 
 
+  getClient(name) {
+    this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
+
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    });
+  
+    this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
+      this.singleClient = data.returnObject == null ? [] : data.returnObject;
+      this.singleClient = this.singleClient.filter(c => c.name === name);
+      console.log('singleClient: ', this.singleClient[0].id);
+    });
+    for (let i of this.singleClient){
+      
+      let clientId = i.id
+      return clientId
+    }
+  }
+removeTest(item) {
+ this.items = this.items.filter(e => e !== item)
+
+}
 labtest(modal) {
   this.getclients()
   this.showModal(modal)
 }
-
-viewSingleClient(modal, data) {
-  this.clientId = data.id
-  this.getclientTemplates()
-  this.showModal(modal)
-}
-
+ 
 
 showModal(modal) {
   this.modalService.open(modal, this.modalOptions).result.then((result) => {

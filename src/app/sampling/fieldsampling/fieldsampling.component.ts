@@ -147,9 +147,19 @@ export class FieldsamplingComponent implements OnInit {
       console.log('samplingData: ', data);
       this.spinnerService.hide();
       let types = 'Field'
-      this.samplingData = data.returnObject.filter( i => types.includes( i.sampleType))
+      this.samplingData = data.returnObject.filter( c => c.samples.filter(m => m.sampleType == 0))
     });
   }
+
+  getNumberOfSamplings(samplingId, sampleType){
+    let sampling = this.samplingData.filter(m => m.id === samplingId)
+     
+    let sample = sampling[0].samples.filter(k => k.sampleType == 0)
+  
+    return sample.length
+  
+  }
+
   getClients() {
     this.spinnerService.show();
     this.apiUrl = environment.AUTHAPIURL + 'client/getallclient';
@@ -314,7 +324,7 @@ export class FieldsamplingComponent implements OnInit {
   this.httpClient.get<any>(this.apiUrl, { headers: reqHeader }).subscribe(data => {
     console.log('clientsSampleData: ', data);
     this.clientSamples = data.returnObject == null ? [] : data.returnObject;
-    this.clientSamples =this.clientSamples.filter(e => e.sampleType == 1)
+    this.clientSamples =this.clientSamples.filter(e => e.sampleType == 0)
      
   });
 } 
