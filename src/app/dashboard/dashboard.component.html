@@ -9,7 +9,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6 mb-4">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
@@ -24,7 +24,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6 mb-4">
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
@@ -39,7 +39,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6 text-white">
+          <div class="col-lg-3 col-6 mb-4 text-white">
             <!-- small box -->
             <div class="small-box bg-secondary">
               <div class="inner">
@@ -54,7 +54,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6 mb-4">
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
@@ -69,270 +69,74 @@
             </div>
           </div>
           <!-- ./col -->
-        </div>
-        <!-- /.row -->
-        <!-- Main row -->
-        <div class="row">
-          <!-- Left col -->
-          <section class="col-lg-7 card-wrapper connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="row">
-              <div class="col-md-12 d-flex">
-                <div class="col-md-4">
-                  
-                    <h6>Total Paid</h6>
-                    <h5 class="">₦ 1,358,000</h5>
-                  
-                </div>
-                <div class="col-md-8">
-                  <div class="col-md-12 d-flex">
-                    
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Select Year</label>
-                        <select class="form-control">
-                          <option>2019-2020</option>
-                          <option>2018-2019</option>
-                          
-                          
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  
-                </div>
-                
-            
 
-               
-                <!-- /.chart-responsive -->
-              </div>
-              <!-- /.col -->
-              
-              <!-- /.col -->
-            </div>
-            <div class="row">
-              <div class="chart w-100">
-                <!-- Sales Chart Canvas -->
-                <canvas id="salesChart" height="320" style="height: 320px;"></canvas>
-              </div>
-            </div>
-            
-            <!-- /.card -->
+          <div class="col-lg-3 col-6 mb-4">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+              <div class="inner">
+                <h3>Equipment</h3>
 
-            <!-- DIRECT CHAT -->
+                <p>Inventory</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a  [routerLink]="['/equipmentinventory']" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6 mb-4">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>Stock</h3>
+
+                <p>Inventory</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a  [routerLink]="['/stockinventory']" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6 mb-4 ">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>All</h3>
+
+                <p>Sampling</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a [routerLink]="['/allSampling']" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6 mb-4">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>Certificate </h3>
+
+                <p>Report</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a  [routerLink]="['/reports']" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
            
-            <!--/.direct-chat -->
-
-            <!-- TO DO List -->
-           
-            <!-- /.card -->
-          </section>
-          <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable">
-
-            <!-- Map card -->
-            <div class="card">
-              <!-- /.card-body-->
-              <div class="card card-wrapper" style="margin-bottom: 0;">
-                <div class="card-header card-wrapper bg-header-color">
-                  <h3 class="card-title   ">Upcoming Reminders</h3>
-  
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <ul class="products-list product-list-in-card pl-2 pr-2">
-                    <li class="item ">
-                      <div class="product-img">
-                        <img src="assets/dist/img/default-150x150.png" alt="Product Image" class="img-size-50" style="margin:0;">
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript:void(0)" class="product-title">Unpaid invoices for MAY-2020
-                          <span class="badge badge-warning btn btn-padding-db float-right">View</span></a>
-                        <span class="product-description">
-                          Second Notice
-                        </span>
-                        <span class="badge tran-warning btn  float-left">Due Date: 12 Days </span>
-                      </div>
-                    </li>
-                    <li class="item ">
-                      <div class="product-img">
-                        <img src="assets/dist/img/default-150x150.png" alt="Product Image" class="img-size-50" style="margin:0;">
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript:void(0)" class="product-title">Field Samplinf for Flout Mill for MAY-2020
-                          <span class="badge badge-warning btn btn-padding-db float-right">View</span></a>
-                        <span class="product-description">
-                          Second Notice
-                        </span>
-                        <span class="badge tran-warning btn  float-left">Due Date: 12 Days </span>
-                      </div>
-                    </li>
-                    <li class="item ">
-                      <div class="product-img">
-                        <img src="assets/dist/img/default-150x150.png" alt="Product Image" class="img-size-50" style="margin:0;">
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript:void(0)" class="product-title">Unpaid Invoice for Coker Cola Jun-2020
-                          <span class="badge badge-warning btn btn-padding-db float-right">View</span></a>
-                        <span class="product-description">
-                          Second Notice
-                        </span>
-                        <span class="badge badge-warning btn  float-left">Due Date: 12 Days </span>
-                      </div>
-                    </li>
-                  
-                  </ul>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer text-center">
-                  <a href="javascript:void(0)" class="uppercase">View All Reminders</a>
-                </div>
-                <!-- /.card-footer -->
-              </div>
-            </div>
-            <!-- /.card -->
-
-            <!-- solid sales graph -->
-           
-            <!-- /.card -->
-
-            <!-- Calendar -->
-           
-            <!-- /.card -->
-          </section>
-
-
-          <section class="col-lg-7 connectedSortable">
-            <div class="row">
-              <div class="card card-wrapper mt-5 w-100">
-                <div class="card-header">
-                  <h3 class="card-title ">Recent Transaction</h3>
-  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0" style="height: 300px;">
-                  <table class="table table-head-fixed text-nowrap">
-                    <thead class="card-wrapper">
-                      <tr>
-                        <th >Transaction ID</th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Amount</th>
-                        <th>View</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>₦ 1450</td>
-                        <td><span class="badge badge-warning btn btn-padding-db float-right">View</span></td>
-                      </tr>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>₦ 1450</td>
-                        <td><span class="badge badge-warning btn btn-padding-db float-right">View</span></td>
-                      </tr>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>₦ 1450</td>
-                        <td><span class="badge badge-warning btn btn-padding-db float-right">View</span></td>
-                      </tr>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>₦ 1450</td>
-                        <td><span class="badge badge-warning btn btn-padding-db float-right">View</span></td>
-                      </tr>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>₦ 1450</td>
-                        <td><span class="badge badge-warning btn btn-padding-db float-right">View</span></td>
-                      </tr>
-                     
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.card-body -->
-              </div>
-            </div>
-          </section>
-
-
-
-          <section class="col-lg-5 connectedSortable">
-            <div class="card mt-5 ">
-              <!-- /.card-body-->
-              <div class="card card-wrapper" style="margin-bottom: 0;">
-                <div class="card-header card-wrapper bg-header-color">
-                  <h3 class="card-title   ">Activity Log</h3>
-  
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0 my-3 div-scroll">
-                  <ul class="products-list product-list-in-card pl-2 pr-2" *ngFor="let data of apidata?.timelines">
-                    <li class="item ">
-                    
-                      <div class="col-md-12">
-                        <a href="javascript:void(0)" class="product-title">{{data.title}}
-                          <span class="badge badge-warning btn btn-padding-db float-right">Role</span></a> <br>
-
-                        <span class="badge tran-warning btn  float-left">Date Time: {{data.created_at | date:'MMM d, y, h:mm:ss a' }} </span>
-                      </div>
-                    </li>
-                   
-                  </ul>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer text-center">
-                  <a href="javascript:void(0)" class="uppercase">View All Activity Log</a>
-                </div>
-                <!-- /.card-footer -->
-              </div>
-            </div>
-          </section>
-
-
-
-        
-
-          <!-- right col -->
-        </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+          <a class="card module shadow " asp-area="" asp-controller="BureauDeChange" asp-action="BdcList">
+            <img src="../../assets/dist/img/sethimage.jpeg" class="icon img-fluid " style="width: 130px;height: 120px; " />
+            BDC Management
+        </a>
+        </div> 
+      </div>
+      
     </section>
     <!-- /.content -->
   </div>

@@ -150,4 +150,56 @@ export class ReportComponent implements OnInit {
  
     });
   }
+
+  deleteReport(reportId) { 
+    const reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+     Authorization: "Bearer " + localStorage.getItem("access_token"),
+    });
+    
+    this.apiUrl = environment.AUTHAPIURL + 'report/deletereport/' + reportId; 
+
+   Swal.fire({
+     title: "Are you sure?",
+     text: "You won't be able to revert this!",
+     icon: "warning",
+     showCancelButton: true,
+     confirmButtonColor: "#3085d6",
+     cancelButtonColor: "#d33",
+     confirmButtonText: "Yes, delete it!",
+   }).then((result) => {
+     if (result.value) {
+       this.spinnerService.show();
+       this.httpClient
+         .delete<any>(this.apiUrl,  { headers: reqHeader })
+         .subscribe((data) => {
+           if (data.status == true) {
+             Swal.fire({
+               icon: "success",
+               title: "Success",
+               text: "Report has been successfully deleted!",
+               showConfirmButton: true,
+               timer: 5000,
+             });
+             this.getReports();
+
+             // this.reload();
+             this.spinnerService.hide();
+             this.modalService.dismissAll();
+           } else {
+             this.spinnerService.hide();
+
+             Swal.fire({
+               icon: "error",
+               title: "",
+               text: data.message,
+               // text:  'An error ocurred while trying to delete Todo!',
+               showConfirmButton: true,
+               timer: 5000,
+             });
+           }
+         });
+     }
+   });
+ }
 }

@@ -101,9 +101,7 @@ export class LoginComponent implements OnInit {
           this.spinnerService.hide();
           this.router.navigate(['/dashboard']);
 
-        } else {
-          this.spinnerService.hide();
-
+        } else if(data.status == false) {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -112,6 +110,8 @@ export class LoginComponent implements OnInit {
             timer: 5000,
             timerProgressBar: true
           });
+          this.spinnerService.hide();
+
 
         }
 

@@ -297,7 +297,7 @@
   <div class=""> 
     <div class="card-header row">
       <h4 class="col-md-9">{{sampleName}} </h4>
-      <a  class="pointer button-login btn"  id="dismissBtn" (click)="modal.close('Save click')">X</a>
+      <a  class="pointer button-login btn float-right"  id="dismissBtn" (click)="modal.close('Save click')">X</a>
     </div> 
     <div class="card-body">
       <form class="" [formGroup]="testsForm" (ngSubmit)="onSubmitTest(testsForm.value)">
@@ -382,6 +382,7 @@
     <div class="card-header row">
       <div class="col-md-9">
         <h4>{{clientName}}</h4>
+      <a  class="pointer button-login btn float-right"  id="closeBtn" (click)="modal.close('Save click')">X</a>
         
       </div>
     </div>
@@ -443,7 +444,7 @@
 
     </ul> 
   </div>
-  <div *ngIf="sampleData.length > 0" class="col-md-3">
+  <div *ngIf="sampleData.length > 0" class="col-md-3 my-4">
     <button class="btn float-right button-login" (click)="uploadSampling()" >
       Upload Tests </button>
     </div>

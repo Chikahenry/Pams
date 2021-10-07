@@ -234,17 +234,13 @@ export class ForwardedSamplingComponent implements OnInit {
       this.sampleData.push(obj)
    }else {
      this.sampleData.push(obj)
-     this.items = []
+    //  this.items = []
      console.log("samplejnl  ",this.sampleData)
-     Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Test Value save successfully",
-        showConfirmButton: true,
-        timer: 5000,
-      }); 
-      document.getElementById("dismissBtn").click
-
+      
+      this.uploadSampling()
+      document.getElementById("dismissBtn").click()
+      document.getElementById("closeBtn").click()
+      this.getSamplings()
    }
  }
 
@@ -274,10 +270,11 @@ export class ForwardedSamplingComponent implements OnInit {
             showConfirmButton: true,
             timer: 5000,
           }); 
+          this.items = [];
        }else {
         Swal.fire({
             icon: "error",
-            title: "Oop...",
+            title: "Oops...",
             text: data.message,
             showConfirmButton: true,
             timer: 7000,

@@ -42,9 +42,9 @@ export class DashboardComponent implements OnInit {
 
     this.isRun = localStorage.getItem('is_reload');
     // alert(this.isRun);
-    // if(this.isRun != 'true') {
-    //     this.refresh();
-    // }
+    if(this.isRun != 'true') {
+        this.refresh();
+    }
   }
 
   logout() {

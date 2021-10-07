@@ -47,9 +47,9 @@
                                        
                                       <button title="View" class="btn btn-sm btn-outline-primary mr-3 "  ><i class="nav-icon fas fa-eye"></i>
                                       </button>
-                                        <button title="Download" (click)='downloadReport(reportId)' class="btn btn-sm btn-outline-warning mr-3"  ><i class="nav-icon fas fa-download"></i>
+                                        <button title="Download" (click)='downloadReport(mydata.id)' class="btn btn-sm btn-outline-warning mr-3"  ><i class="nav-icon fas fa-download"></i>
                                   </button>
-                                  <button title="Delete" class="btn btn-sm btn-outline-danger "   ><i class="nav-icon fas fa-trash-alt"></i>
+                                  <button title="Delete" (click)='deleteReport(mydata.id)' class="btn btn-sm btn-outline-danger "   ><i class="nav-icon fas fa-trash-alt"></i>
                                   </button>
                                   </td>
                               </tr>
